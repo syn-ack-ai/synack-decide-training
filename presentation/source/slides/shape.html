@@ -1,0 +1,31 @@
+<section id="shape" data-transition="fade" style="display:flex; flex-direction:column; gap:40px; padding:128px; background:#070b16">
+  <p style="position:absolute; top:56px; left:128px; width:1100px; font-family:'IBM Plex Mono', 'Courier New', monospace; font-size:24px; letter-spacing:3px; color:#6f82a8">SYNACK DECIDE V7 // HOW WE TRAINED IT</p>
+  <p style="position:absolute; top:56px; right:128px; width:300px; font-family:'IBM Plex Mono', 'Courier New', monospace; font-size:24px; letter-spacing:3px; text-align:right; color:#6f82a8">06 / 25</p>
+  <div style="display:flex; flex-direction:column; gap:16px; padding:0 0 28px; border-bottom:2px solid #1e3157">
+    <p style="font-family:'IBM Plex Mono', 'Courier New', monospace; font-size:24px; font-weight:600; letter-spacing:3px; color:#21c8ff">THE TRAINING SHAPE</p>
+    <h2 style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:72px; font-weight:600; line-height:1.1; color:#f5f7ff">One example, as the model sees it</h2>
+  </div>
+  <div style="display:flex; flex-direction:column; gap:4px; padding:36px 40px; background:#0e1730; border-radius:16px">
+    <p style="font-family:'IBM Plex Mono', 'Courier New', monospace; font-size:28px; color:#aab7d0">&lt;|turn&gt;system</p>
+    <p style="font-family:'IBM Plex Mono', 'Courier New', monospace; font-size:28px; color:#aab7d0">Evaluate the supplied decision task. … Return only its label.&lt;turn|&gt;</p>
+    <p style="font-family:'IBM Plex Mono', 'Courier New', monospace; font-size:28px; color:#aab7d0">&lt;|turn&gt;user</p>
+    <p style="font-family:'IBM Plex Mono', 'Courier New', monospace; font-size:28px; color:#aab7d0">{"state":{"ticket":"I was charged twice …","customer_tier":"pro"},</p>
+    <p style="font-family:'IBM Plex Mono', 'Courier New', monospace; font-size:28px; color:#aab7d0">"question":"Which team should handle this ticket first?",</p>
+    <p style="font-family:'IBM Plex Mono', 'Courier New', monospace; font-size:28px; color:#aab7d0">"options":{"A":shipping, "B":technical, "C":billing}}&lt;turn|&gt;</p>
+    <p style="font-family:'IBM Plex Mono', 'Courier New', monospace; font-size:28px; color:#aab7d0">&lt;|turn&gt;model</p>
+    <p style="font-family:'IBM Plex Mono', 'Courier New', monospace; font-size:28px; color:#aab7d0">&lt;|channel&gt;thought&lt;channel|&gt; <span style="color:#8fa9c9">← prompt: not graded</span></p>
+    <p style="font-family:'IBM Plex Mono', 'Courier New', monospace; font-size:28px; color:#21c8ff"><b>C&lt;turn|&gt;</b> <span style="color:#21c8ff">← the only graded part</span></p>
+  </div>
+  <div style="display:flex; flex-direction:row; gap:32px">
+    <div style="display:flex; flex-direction:column; gap:8px; flex:1; padding:16px 0 0; border-top:4px solid #21c8ff">
+      <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:28px; color:#f5f7ff"><b>Options shuffled</b> in training, so position means nothing</p>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:8px; flex:1; padding:16px 0 0; border-top:4px solid #21c8ff">
+      <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:28px; color:#f5f7ff"><b>The graded answer is one token</b>: just the label C</p>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:8px; flex:1; padding:16px 0 0; border-top:4px solid #21c8ff">
+      <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:28px; color:#f5f7ff"><b>Same layout</b> in training and in real use, exactly</p>
+    </div>
+  </div>
+  <aside>This is the whole training example as the model sees it, shortened in the middle: a few hundred tokens of prompt, then a one-token answer. The tags like turn and channel are special tokens from Gemma's chat format. The ticket and the question go in as compact JSON. The options are shuffled and labelled A, B, C; here billing, the right answer, landed on C. Everything up to the model's turn is the prompt and is not graded. The model is graded only on producing C and then the end-of-turn token, which teaches it to answer with one label and stop. The empty thought block is added by Gemma's own chat template when thinking is off, and we keep it so training and real use match exactly.</aside>
+</section>

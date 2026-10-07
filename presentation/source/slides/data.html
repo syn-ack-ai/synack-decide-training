@@ -1,0 +1,19 @@
+<section id="data" data-transition="fade" style="background:#070B16;color:#AAB7D0;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:44px">
+<p style="position:absolute;left:128px;top:56px;width:1100px;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;color:#6F82A8;letter-spacing:3px">SYNACK DECIDE V7 // HOW WE TRAINED IT</p>
+<p style="position:absolute;right:128px;top:56px;width:300px;text-align:right;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;color:#6F82A8;letter-spacing:3px">17 / 25</p>
+<div style="display:flex;flex-direction:column;gap:16px;border-bottom:2px solid #1E3157;padding:0 0 28px 0">
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;color:#21C8FF;font-weight:600;letter-spacing:3px">THE DATA</p>
+<h2 style="font-size:72px;font-weight:600;line-height:1.1;color:#F5F7FF">163,511 examples from seven sources</h2>
+</div>
+<div style="display:flex;flex-direction:column;gap:18px">
+<div style="display:flex;gap:24px;align-items:center"><p style="width:600px;font-size:28px;color:#F5F7FF">Public dataset train splits (twice)</p><div style="width:860px;height:32px;background:#5C8DFF;border-radius:6px"></div><p style="font-size:28px;color:#F5F7FF;white-space:nowrap">77,436</p></div>
+<div style="display:flex;gap:24px;align-items:center"><p style="width:600px;font-size:28px;color:#F5F7FF">Code-checked puzzles (twice)</p><div style="width:397px;height:32px;background:#5C8DFF;border-radius:6px"></div><p style="font-size:28px;color:#F5F7FF">35,776</p></div>
+<div style="display:flex;gap:24px;align-items:center"><p style="width:600px;font-size:28px;color:#F5F7FF">Tev1 training records</p><div style="width:207px;height:32px;background:#5C8DFF;border-radius:6px"></div><p style="font-size:28px;color:#F5F7FF">18,674</p></div>
+<div style="display:flex;gap:24px;align-items:center"><p style="width:600px;font-size:28px;color:#F5F7FF">Public GitHub PRs + claim checks</p><div style="width:166px;height:32px;background:#21C8FF;border-radius:6px"></div><p style="font-size:28px;color:#F5F7FF">14,966</p></div>
+<div style="display:flex;gap:24px;align-items:center"><p style="width:600px;font-size:28px;color:#F5F7FF">Targeted gap sets (added in v5)</p><div style="width:139px;height:32px;background:#5C8DFF;border-radius:6px"></div><p style="font-size:28px;color:#F5F7FF">12,474</p></div>
+<div style="display:flex;gap:24px;align-items:center"><p style="width:600px;font-size:28px;color:#F5F7FF">Finance and smart-contract sets</p><div style="width:26px;height:32px;background:#5C8DFF;border-radius:6px"></div><p style="font-size:28px;color:#F5F7FF">2,368</p></div>
+<div style="display:flex;gap:24px;align-items:center"><p style="width:600px;font-size:28px;color:#F5F7FF">PR risk claims at the real rate</p><div style="width:20px;height:32px;background:#21C8FF;border-radius:6px"></div><p style="font-size:28px;color:#F5F7FF">1,817</p></div>
+</div>
+<p style="font-size:28px;line-height:1.4;color:#F5F7FF"><b>Kept out on purpose:</b> HLE, SATA-Bench, MuSR and SGD, so they stay an honest never-trained yardstick.</p>
+<aside>The released v7 trained on 163,511 examples. The biggest share comes from the training splits of 15 public datasets, such as ANLI, HellaSwag, GSM8K and BANKING77, and from puzzles our own code generates with computed answers, like logic, dates and code output; both of these appear twice, a deliberate second pass. Then Tev1's training records, public GitHub pull requests labelled by whether they needed real review changes, plus balanced examples of PR descriptions that claim to be low or high risk, so the model learns to ignore such claims. The gap sets were added in v5 for weak areas. Some benchmarks were kept out of training completely, so we could tell whether the model was really getting better at reasoning or just at our training data.</aside>
+</section>

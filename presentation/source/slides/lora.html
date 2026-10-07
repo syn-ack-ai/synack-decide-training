@@ -1,0 +1,35 @@
+<section id="lora" data-transition="fade" style="background:#070B16;color:#AAB7D0;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:48px">
+<p style="position:absolute;left:128px;top:56px;width:1100px;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;color:#6F82A8;letter-spacing:3px">SYNACK DECIDE V7 // HOW WE TRAINED IT</p>
+<p style="position:absolute;right:128px;top:56px;width:300px;text-align:right;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;color:#6F82A8;letter-spacing:3px">14 / 25</p>
+<div style="display:flex;flex-direction:column;gap:16px;border-bottom:2px solid #1E3157;padding:0 0 28px 0">
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;color:#21C8FF;font-weight:600;letter-spacing:3px">HOW LEARNING WORKS · 6</p>
+<h2 style="font-size:72px;font-weight:600;line-height:1.1;color:#F5F7FF">LoRA: train a small add-on</h2>
+</div>
+<div style="display:flex;gap:80px;flex:1;align-items:center">
+<div style="display:flex;gap:28px;align-items:center">
+<div style="display:flex;flex-direction:column;gap:16px;align-items:center">
+<div style="width:340px;height:340px;background:#1E3157;border-radius:8px;display:flex;align-items:center;justify-content:center"><p style="font-size:44px;font-weight:700;color:#F5F7FF">W</p></div>
+<p style="font-size:24px;color:#F5F7FF">frozen · 7,929,856</p>
+</div>
+<p style="font-size:72px;font-weight:300;color:#F5F7FF">+</p>
+<div style="display:flex;flex-direction:column;gap:16px;align-items:center">
+<div style="width:44px;height:340px;background:#21C8FF;border-radius:8px"></div>
+<p style="font-size:24px;color:#F5F7FF">B</p>
+</div>
+<p style="font-size:44px;color:#F5F7FF">×</p>
+<div style="display:flex;flex-direction:column;gap:16px;align-items:center">
+<div style="width:340px;height:44px;background:#21C8FF;border-radius:8px"></div>
+<p style="font-size:24px;color:#F5F7FF">A · B and A: 90,112</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:28px">
+<p style="font-size:32px;line-height:1.4">The original weights <b>never change</b>. Next to each big matrix sits a thin pair, B × A (rank 16).</p>
+<div style="display:flex;flex-direction:column;gap:4px">
+<p style="font-size:72px;font-weight:700;line-height:1;color:#21C8FF">~2%</p>
+<p style="font-size:28px">trainable: about 494M of 26B numbers</p>
+</div>
+<p style="font-size:28px;line-height:1.4">B starts at zero, so training starts from the exact Gemma model. At the end B × A is merged into W: same size, same speed.</p>
+</div>
+</div>
+<aside>Changing all 26 billion weights would need several times the model's memory for training bookkeeping, and it risks erasing what the model already knows. LoRA, low-rank adaptation, freezes the original weights and adds a thin pair of matrices, B and A, next to each big matrix; the layer uses W plus B times A, scaled. The model's hidden size is 2,816, so a square 2,816 by 2,816 matrix has about 7.9 million numbers, while its rank-16 add-on has 90,112, about 1.1 percent. We put LoRA on the attention and feed-forward projections and on all 128 experts in every layer: about 494 million trainable numbers, roughly 2 percent of the model. Backpropagation only computes gradients for these. B starts at zero, so at step zero the model is exactly the original Gemma. After training, B times A is added into W once, so the released model has the same size and speed as the original.</aside>
+</section>

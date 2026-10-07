@@ -1,0 +1,32 @@
+<section id="backprop" data-transition="fade" style="background:#070B16;color:#AAB7D0;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:44px">
+<p style="position:absolute;left:128px;top:56px;width:1100px;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;color:#6F82A8;letter-spacing:3px">SYNACK DECIDE V7 // HOW WE TRAINED IT</p>
+<p style="position:absolute;right:128px;top:56px;width:300px;text-align:right;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;color:#6F82A8;letter-spacing:3px">13 / 25</p>
+<div style="display:flex;flex-direction:column;gap:16px;border-bottom:2px solid #1E3157;padding:0 0 28px 0">
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;color:#21C8FF;font-weight:600;letter-spacing:3px">HOW LEARNING WORKS · 5</p>
+<h2 style="font-size:72px;font-weight:600;line-height:1.1;color:#F5F7FF">Backpropagation: share out the blame</h2>
+</div>
+<div style="display:flex;gap:16px">
+<div style="flex:1;background:#111C36;border-radius:12px;padding:28px 16px"><p style="font-size:28px;text-align:center;color:#F5F7FF">Tokens</p></div>
+<div style="flex:1;background:#10254A;border-radius:12px;padding:28px 16px"><p style="font-size:28px;text-align:center;color:#F5F7FF">Layer 1</p></div>
+<div style="flex:1;background:#10254A;border-radius:12px;padding:28px 16px"><p style="font-size:28px;text-align:center;color:#F5F7FF">Layer 2</p></div>
+<div style="flex:1;background:#10254A;border-radius:12px;padding:28px 16px"><p style="font-size:28px;text-align:center;color:#F5F7FF">…</p></div>
+<div style="flex:1;background:#10254A;border-radius:12px;padding:28px 16px"><p style="font-size:28px;text-align:center;color:#F5F7FF">Layer 30</p></div>
+<div style="flex:1;background:#111C36;border-radius:12px;padding:28px 16px"><p style="font-size:28px;text-align:center;color:#F5F7FF">Scores</p></div>
+<div style="flex:1;background:#13305F;border-radius:12px;padding:28px 16px"><p style="font-size:28px;text-align:center;color:#F5F7FF"><b>Loss</b></p></div>
+</div>
+<div style="display:flex;flex-direction:column;gap:20px">
+<p style="font-size:32px;color:#5C8DFF"><b>→ Forward pass:</b> the example flows through all 30 layers to the scores and the loss.</p>
+<p style="font-size:32px;color:#21C8FF"><b>← Backward pass:</b> starting from the loss, gradients flow back layer by layer.</p>
+</div>
+<div style="display:flex;gap:32px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#0C1428;border:2px solid #1E3157;border-radius:16px;padding:32px">
+<h3 style="font-size:32px;font-weight:600;color:#F5F7FF">The chain rule</h3>
+<p style="font-size:28px;line-height:1.4">If A affects B and B affects C, then A's effect on C is the two effects multiplied.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#0C1428;border:2px solid #1E3157;border-radius:16px;padding:32px">
+<h3 style="font-size:32px;font-weight:600;color:#F5F7FF">The result</h3>
+<p style="font-size:28px;line-height:1.4">Every trainable number learns how much it contributed to the mistake, and in which direction.</p>
+</div>
+</div>
+<aside>We cannot set the scores directly: they are produced by about 26 billion weights spread over 30 layers. A weight deep in layer 5 affects the scores only through every layer after it. Backpropagation works out, for every weight we are training, how much the loss would change if that weight changed slightly. It runs in two passes. The forward pass runs the example through the model to get the scores and the loss, keeping the intermediate results. The backward pass starts from the score gradients we just saw and walks back through the layers, using the chain rule: if A affects B and B affects C, A's effect on C is the two effects multiplied. The picture to keep in mind is sharing out the blame. Libraries such as PyTorch do this automatically with one call. To save memory on long prompts we keep only some intermediate results and recompute the rest, which is called gradient checkpointing.</aside>
+</section>

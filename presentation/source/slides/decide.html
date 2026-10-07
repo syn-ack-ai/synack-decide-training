@@ -1,0 +1,33 @@
+<section id="decide" data-transition="fade" style="background:#070B16;color:#AAB7D0;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:48px">
+<p style="position:absolute;left:128px;top:56px;width:1100px;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;color:#6F82A8;letter-spacing:3px">SYNACK DECIDE V7 // HOW WE TRAINED IT</p>
+<p style="position:absolute;right:128px;top:56px;width:300px;text-align:right;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;color:#6F82A8;letter-spacing:3px">02 / 25</p>
+<div style="display:flex;flex-direction:column;gap:16px;border-bottom:2px solid #1E3157;padding:0 0 28px 0">
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;color:#21C8FF;font-weight:600;letter-spacing:3px">THE TASK</p>
+<h2 style="font-size:72px;font-weight:600;line-height:1.1;color:#F5F7FF">A decision model picks an option and says how sure it is</h2>
+</div>
+<div style="display:flex;gap:40px;align-items:center;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:6px;background:#0C1428;border:2px solid #1E3157;border-radius:16px;padding:40px;font-family:'IBM Plex Mono', 'Courier New', monospace">
+<p style="font-size:24px;color:#5C8DFF;font-weight:600">IN: STATE + QUESTIONS</p>
+<p style="font-size:28px;color:#F5F7FF">ticket: "I was charged twice</p>
+<p style="font-size:28px;color:#F5F7FF">for order #4471 and the app</p>
+<p style="font-size:28px;color:#F5F7FF">keeps crashing..."</p>
+<p style="font-size:28px;color:#F5F7FF">tier: "pro"</p>
+<p style="font-size:24px;color:#5C8DFF;font-weight:600">Q1 (choice)</p>
+<p style="font-size:28px;color:#F5F7FF">Which team handles it first?</p>
+<p style="font-size:28px;color:#F5F7FF">billing · shipping · technical</p>
+<p style="font-size:24px;color:#5C8DFF;font-weight:600">Q2 (yes/no)</p>
+<p style="font-size:28px;color:#F5F7FF">Customer is losing money now.</p>
+</div>
+<x-shape kind="arrow-right" style="width:96px;height:48px;background:#21C8FF"></x-shape>
+<div style="flex:1;display:flex;flex-direction:column;gap:6px;background:#0C1428;border:2px solid #1E3157;border-radius:16px;padding:40px;font-family:'IBM Plex Mono', 'Courier New', monospace">
+<p style="font-size:24px;color:#5C8DFF;font-weight:600">OUT: ONE ANSWER PER QUESTION</p>
+<p style="font-size:28px;color:#F5F7FF">team: <b>billing</b></p>
+<p style="font-size:28px;color:#F5F7FF">  billing    0.91</p>
+<p style="font-size:28px;color:#F5F7FF">  shipping   0.01</p>
+<p style="font-size:28px;color:#F5F7FF">  technical  0.08</p>
+<p style="font-size:28px;color:#F5F7FF">urgent: <b>yes</b>, p = 0.87</p>
+<p style="font-size:24px;color:#7D8FB3">(probabilities illustrative)</p>
+</div>
+</div>
+<aside>Our model is not a chatbot. It reads a state, here a support ticket, plus typed questions. A choice question has between 2 and 255 options; a yes/no question asks whether a statement is true. For every question it returns one answer and a probability for every option. The probabilities matter: they tell the caller how sure the model is, so a system can act automatically when the model is confident and ask a person when it is not. The example is made up and the numbers are illustrative.</aside>
+</section>

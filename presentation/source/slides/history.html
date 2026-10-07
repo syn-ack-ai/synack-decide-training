@@ -1,0 +1,20 @@
+<section id="history" data-transition="fade" style="background:#070B16;color:#AAB7D0;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:40px">
+<p style="position:absolute;left:128px;top:56px;width:1100px;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;color:#6F82A8;letter-spacing:3px">SYNACK DECIDE V7 // HOW WE TRAINED IT</p>
+<p style="position:absolute;right:128px;top:56px;width:300px;text-align:right;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;color:#6F82A8;letter-spacing:3px">20 / 25</p>
+<div style="display:flex;flex-direction:column;gap:16px;border-bottom:2px solid #1E3157;padding:0 0 28px 0">
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;color:#21C8FF;font-weight:600;letter-spacing:3px">THE JOURNEY</p>
+<h2 style="font-size:72px;font-weight:600;line-height:1.1;color:#F5F7FF">Six versions in five days</h2>
+</div>
+<table style="font-size:26px;color:#F5F7FF">
+<tr><th style="width:12%;text-align:left">Version</th><th style="width:42%;text-align:left">What changed</th><th style="width:20%;text-align:left">Sample score</th><th style="width:26%;text-align:left">Decision</th></tr>
+<tr><td>v2</td><td>Compact prompt, 255 labels; 12B and MoE trials</td><td>53.7 / 54.9</td><td>experiments</td></tr>
+<tr><td>v3</td><td>MoE in full precision on a rented GPU</td><td>54.9</td><td>first release, replaced</td></tr>
+<tr><td>v4</td><td>Continued from v3: ordinal and PR-claim fixes</td><td>55.7</td><td>replaced by v5</td></tr>
+<tr><td>v5</td><td>Continued from v4: gap sets, self-distillation</td><td>58.2</td><td>released</td></tr>
+<tr><td>v6</td><td>Stacked on v5, new teacher blend</td><td>58.44</td><td>not released: flat, never-trained down</td></tr>
+<tr><td>old v7</td><td>Fresh LoRA, one pass over 96,534 examples</td><td>58.78</td><td>not released: lost reasoning</td></tr>
+<tr style="background:#13305F"><td><b>v7</b></td><td><b>Fresh LoRA, full dose and every fix</b></td><td><b>61.11</b></td><td><b>released: official 59.54</b></td></tr>
+</table>
+<p style="font-size:24px;color:#7D8FB3">Sample score: a 3,000-row estimate of the index (about ±3 to 4). v7's complete run came in 1.57 below its sample.</p>
+<aside>We trained six versions in about five days, from 2 to 6 October. v2 established the format: the compact prompt and the 255 single-token labels. v3 moved the mixture-of-experts model to full precision on a rented GPU. v4 and v5 each continued training from the previous version with fixes for specific weaknesses, and v5 became the first version we were happy with. v6 stacked another round on v5; its sample score was flat and it lost ground on the never-trained group, which is the shape of benchmaxing, so we did not release it. Old v7 tried a clean, fresh training run and failed in an instructive way, which is the next slide. v7 fixed that and is the released model. The sample scores are quick 3,000-row estimates with an uncertainty of about three to four points; v7's complete run scored 1.57 below its sample.</aside>
+</section>

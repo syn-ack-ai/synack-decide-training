@@ -1,0 +1,25 @@
+<section id="loop" data-transition="fade" style="background:#070B16;color:#AAB7D0;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:48px">
+<p style="position:absolute;left:128px;top:56px;width:1100px;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;color:#6F82A8;letter-spacing:3px">SYNACK DECIDE V7 // HOW WE TRAINED IT</p>
+<p style="position:absolute;right:128px;top:56px;width:300px;text-align:right;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;color:#6F82A8;letter-spacing:3px">15 / 25</p>
+<div style="display:flex;flex-direction:column;gap:16px;border-bottom:2px solid #1E3157;padding:0 0 28px 0">
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;color:#21C8FF;font-weight:600;letter-spacing:3px">HOW LEARNING WORKS · 7</p>
+<h2 style="font-size:72px;font-weight:600;line-height:1.1;color:#F5F7FF">The training loop, 3,397 times</h2>
+</div>
+<div style="display:flex;gap:56px;flex:1">
+<div style="flex:1;display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px">
+<div style="display:flex;flex-direction:column;gap:8px;background:#0C1428;border:2px solid #1E3157;border-radius:16px;padding:24px"><h3 style="font-size:32px;font-weight:600;color:#21C8FF">1 Batch</h3><p style="font-size:26px;line-height:1.35">32+ examples, grouped by length</p></div>
+<div style="display:flex;flex-direction:column;gap:8px;background:#0C1428;border:2px solid #1E3157;border-radius:16px;padding:24px"><h3 style="font-size:32px;font-weight:600;color:#21C8FF">2 Forward</h3><p style="font-size:26px;line-height:1.35">scores and loss for each</p></div>
+<div style="display:flex;flex-direction:column;gap:8px;background:#0C1428;border:2px solid #1E3157;border-radius:16px;padding:24px"><h3 style="font-size:32px;font-weight:600;color:#21C8FF">3 Backward</h3><p style="font-size:26px;line-height:1.35">gradients for the LoRA numbers</p></div>
+<div style="display:flex;flex-direction:column;gap:8px;background:#0C1428;border:2px solid #1E3157;border-radius:16px;padding:24px"><h3 style="font-size:32px;font-weight:600;color:#21C8FF">4 Safety</h3><p style="font-size:26px;line-height:1.35">clip big gradients; skip a step if loss spikes 8x</p></div>
+<div style="display:flex;flex-direction:column;gap:8px;background:#0C1428;border:2px solid #1E3157;border-radius:16px;padding:24px"><h3 style="font-size:32px;font-weight:600;color:#21C8FF">5 Update</h3><p style="font-size:26px;line-height:1.35">AdamW nudges each number a tiny step</p></div>
+<div style="display:flex;flex-direction:column;gap:8px;background:#0C1428;border:2px solid #1E3157;border-radius:16px;padding:24px"><h3 style="font-size:32px;font-weight:600;color:#21C8FF">6 Repeat</h3><p style="font-size:26px;line-height:1.35">one pass over 163,511 examples</p></div>
+</div>
+<div style="width:560px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:28px;color:#F5F7FF"><b>Learning rate</b> (step size), peak 3e-5</p>
+<svg aria-label="Learning rate rises over the first 169 steps, then falls along a cosine curve to zero at step 3,397" width="600" height="300" viewBox="0 0 600 300" style="width:560px;height:280px"><line x1="40" y1="250" x2="580" y2="250" stroke="#8FA9C9" stroke-width="3"/><line x1="40" y1="30" x2="40" y2="250" stroke="#8FA9C9" stroke-width="3"/><path d="M 40 250 L 67 40 L 93 41 L 118 45 L 144 51 L 170 60 L 195 71 L 221 83 L 247 97 L 272 113 L 298 129 L 324 145 L 349 161 L 375 177 L 400 193 L 426 207 L 452 219 L 477 230 L 503 239 L 529 245 L 554 249 L 580 250" fill="none" stroke="#21C8FF" stroke-width="6" stroke-linejoin="round"/></svg>
+<p style="font-size:24px;color:#7D8FB3">Warmup over 169 steps, then cosine decay to zero</p>
+</div>
+</div>
+<p style="font-size:28px;color:#F5F7FF">8 h 51 min on one 96 GB GPU · no steps skipped · best validation accuracy 79.39%, at the last step</p>
+<aside>One training step: take a batch of at least 32 examples, grouped by length so little memory is wasted on padding; run the forward pass and the loss; run the backward pass to get gradients for the LoRA numbers; then two safety checks. Gradient clipping caps an unusually large update, and the spike guard skips a step entirely if its loss is more than 8 times the recent average; in the v7 run nothing was skipped. Then the AdamW optimizer moves each trainable number a small step against its gradient, using running averages so each number gets its own smooth step size. The learning rate sets the step size. Too big damages the model: an early run at 8e-5 collapsed after about 175 steps. v7 used 3e-5, ramped up over the first 5 percent of steps and then lowered along a cosine curve so the last steps are fine adjustments. One pass over 163,511 examples was 3,397 steps, 8 hours 51 minutes on one 96 GB GPU.</aside>
+</section>

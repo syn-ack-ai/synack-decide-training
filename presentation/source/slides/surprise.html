@@ -1,0 +1,36 @@
+<section id="surprise" data-transition="fade" style="background:#070B16;color:#AAB7D0;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:48px">
+<p style="position:absolute;left:128px;top:56px;width:1100px;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;color:#6F82A8;letter-spacing:3px">SYNACK DECIDE V7 // HOW WE TRAINED IT</p>
+<p style="position:absolute;right:128px;top:56px;width:300px;text-align:right;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;color:#6F82A8;letter-spacing:3px">10 / 25</p>
+<div style="display:flex;flex-direction:column;gap:16px;border-bottom:2px solid #1E3157;padding:0 0 28px 0">
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;color:#21C8FF;font-weight:600;letter-spacing:3px">HOW LEARNING WORKS · 2</p>
+<h2 style="font-size:72px;font-weight:600;line-height:1.1;color:#F5F7FF">Measuring a mistake: cross-entropy</h2>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;background:#0E1730;border-radius:16px;padding:40px 48px">
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:44px;color:#F5F7FF">loss = −log( probability of the right answer )</p>
+<p style="font-size:28px;color:#AAB7D0">Read it as: how surprised was the model by the right answer? Training makes this small.</p>
+</div>
+<div style="display:flex;gap:32px">
+<div style="flex:1;display:flex;flex-direction:column;gap:8px;background:#0C1428;border:2px solid #1E3157;border-radius:16px;padding:32px">
+<p style="font-size:28px">p = 1.0</p>
+<p style="font-size:72px;font-weight:700;line-height:1;color:#F5F7FF">0</p>
+<p style="font-size:24px;color:#7D8FB3">no mistake</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px;background:#0C1428;border:2px solid #1E3157;border-radius:16px;padding:32px">
+<p style="font-size:28px">p = 0.5</p>
+<p style="font-size:72px;font-weight:700;line-height:1;color:#F5F7FF">0.69</p>
+<p style="font-size:24px;color:#7D8FB3">a coin flip</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px;background:#13305F;border:2px solid #21C8FF;border-radius:16px;padding:32px">
+<p style="font-size:28px;color:#F5F7FF">p = 0.158 (our C)</p>
+<p style="font-size:72px;font-weight:700;line-height:1;color:#21C8FF">1.85</p>
+<p style="font-size:24px;color:#F5F7FF">before training</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px;background:#0C1428;border:2px solid #1E3157;border-radius:16px;padding:32px">
+<p style="font-size:28px">p = 0.001</p>
+<p style="font-size:72px;font-weight:700;line-height:1;color:#F5F7FF">6.9</p>
+<p style="font-size:24px;color:#7D8FB3">confidently wrong</p>
+</div>
+</div>
+<p style="font-size:28px;color:#F5F7FF">We grade two tokens: the label <b>C</b> and the end-of-turn token after it, which teaches the model to stop.</p>
+<aside>To improve the model we need one number that says how wrong it was: the loss. For predicting the right token, the standard loss is cross-entropy, minus the log of the probability the model gave to the right answer. If it gave the right answer probability 1, the loss is 0. At 0.5 it is 0.69. Our example's 0.158 gives 1.85. And if the model was confidently wrong, giving the right answer one in a thousand, the loss jumps to 6.9. So the loss punishes confident mistakes hardest. Across all training examples, training tries to make the average surprise small. In our setup the graded tokens are the label and the end-of-turn token after it.</aside>
+</section>

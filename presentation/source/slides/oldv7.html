@@ -1,0 +1,29 @@
+<section id="oldv7" data-transition="fade" style="background:#070B16;color:#AAB7D0;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:48px">
+<p style="position:absolute;left:128px;top:56px;width:1100px;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;color:#6F82A8;letter-spacing:3px">SYNACK DECIDE V7 // HOW WE TRAINED IT</p>
+<p style="position:absolute;right:128px;top:56px;width:300px;text-align:right;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;color:#6F82A8;letter-spacing:3px">21 / 25</p>
+<div style="display:flex;flex-direction:column;gap:16px;border-bottom:2px solid #1E3157;padding:0 0 28px 0">
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;color:#21C8FF;font-weight:600;letter-spacing:3px">THE FAILED RUN</p>
+<h2 style="font-size:72px;font-weight:600;line-height:1.1;color:#F5F7FF">A fresh run must match the dose</h2>
+</div>
+<div style="display:flex;gap:64px;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:32px;line-height:1.4">v5 had seen its core data <b style="color:#F5F7FF">about three times</b> across stacked rounds. Old v7 started fresh and saw it <b style="color:#F5F7FF">once</b>.</p>
+<p style="font-size:24px;color:#7D8FB3;letter-spacing:2px">NEVER-TRAINED BENCHMARKS, OLD V7 VS V5</p>
+<div style="display:flex;gap:20px;flex-wrap:wrap">
+<div style="display:flex;flex-direction:column;gap:4px;background:#0E1730;border:2px solid #1E3157;border-radius:12px;padding:20px 28px"><p style="font-size:44px;font-weight:700;color:#FF8A9A">−14.5</p><p style="font-size:24px">SGD</p></div>
+<div style="display:flex;flex-direction:column;gap:4px;background:#0E1730;border:2px solid #1E3157;border-radius:12px;padding:20px 28px"><p style="font-size:44px;font-weight:700;color:#FF8A9A">−13.8</p><p style="font-size:24px">SATA-Bench</p></div>
+<div style="display:flex;flex-direction:column;gap:4px;background:#0E1730;border:2px solid #1E3157;border-radius:12px;padding:20px 28px"><p style="font-size:44px;font-weight:700;color:#FF8A9A">−12.1</p><p style="font-size:24px">CRUXEval</p></div>
+<div style="display:flex;flex-direction:column;gap:4px;background:#0E1730;border:2px solid #1E3157;border-radius:12px;padding:20px 28px"><p style="font-size:44px;font-weight:700;color:#FF8A9A">−5.2</p><p style="font-size:24px">HLE</p></div>
+</div>
+<p style="font-size:28px;line-height:1.4">It also dropped one fix: PR descriptions claiming "low risk" could sway it again.</p>
+</div>
+<div style="width:600px;display:flex;flex-direction:column;gap:20px;background:#0E1730;border:2px solid #1E3157;border-left:6px solid #21C8FF;border-radius:12px;padding:36px">
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;color:#21C8FF;font-weight:600;letter-spacing:2px">WHAT V7 CHANGED</p>
+<p style="font-size:28px;line-height:1.4;color:#F5F7FF">A second pass over every public-dataset and puzzle row</p>
+<p style="font-size:28px;line-height:1.4;color:#F5F7FF">The balanced PR-claim rows put back</p>
+<p style="font-size:28px;line-height:1.4;color:#F5F7FF">8.5k extra reasoning items</p>
+<p style="font-size:28px;line-height:1.4;color:#AAB7D0">Before any fresh run: count each source's passes in the model it replaces, and list every past fix with its test.</p>
+</div>
+</div>
+<aside>Old v7 is the most useful failure of the project. The idea was sound: instead of stacking yet another round on v5, train one clean LoRA from the Gemma base on all the proven data. But v5 had effectively seen its core data about three times across its stacked rounds, and the fresh run saw it once. The result looked fine on the overall sample, but on benchmarks we never trained on it lost multi-step reasoning: SGD down 14.5, SATA-Bench down 13.8, CRUXEval down 12.1 and HLE down 5.2. It had also dropped the balanced PR-claim data, so a pull request description saying low risk could sway it again. v7 fixed both: a second pass over the public-dataset and puzzle rows, the PR-claim rows put back and 8.5 thousand extra reasoning items. The lesson we wrote down: before any fresh run, count how many passes each source got in the model it replaces, and list every past fix together with the test that proves it.</aside>
+</section>

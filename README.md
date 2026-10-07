@@ -21,6 +21,8 @@ project's logs, job scripts, result files or notes in [docs/](docs/).
 
 Write-up of the project: <https://syn-ack.ai/posts/teaching-a-small-model-to-decide>
 
+**Presentation:** [slides (PDF)](presentation/SynACK-Decide-v7-how-we-trained-it.pdf) and [speaker notes](presentation/SPEAKER_NOTES.md), a 25-slide talk for non-ML audiences ([presentation/](presentation/)).
+
 > **Naming.** The released model was built under the name **v7b**. It is called **v7** everywhere now. The earlier,
 > failed fresh run is **old v7**. Job, dataset and adapter names that say `v7b` (for example
 > `SkyPanther/synack-decide-v7b-lora`, `systemone-train-v7b`, [jobs/job_v7b.sh](jobs/job_v7b.sh)) refer to the

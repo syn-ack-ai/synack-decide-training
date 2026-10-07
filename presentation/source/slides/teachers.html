@@ -1,0 +1,30 @@
+<section id="teachers" data-transition="fade" style="background:#070B16;color:#AAB7D0;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:48px">
+<p style="position:absolute;left:128px;top:56px;width:1100px;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;color:#6F82A8;letter-spacing:3px">SYNACK DECIDE V7 // HOW WE TRAINED IT</p>
+<p style="position:absolute;right:128px;top:56px;width:300px;text-align:right;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;color:#6F82A8;letter-spacing:3px">18 / 25</p>
+<div style="display:flex;flex-direction:column;gap:16px;border-bottom:2px solid #1E3157;padding:0 0 28px 0">
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;color:#21C8FF;font-weight:600;letter-spacing:3px">THE TEACHERS</p>
+<h2 style="font-size:72px;font-weight:600;line-height:1.1;color:#F5F7FF">Two big models, blended 80/20</h2>
+</div>
+<div style="display:flex;gap:80px;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<table style="font-size:32px;color:#F5F7FF">
+<tr><th style="width:68%;text-align:left">Teacher (1,018 held-out questions)</th><th style="width:32%;text-align:right">Accuracy</th></tr>
+<tr><td>Kimi-K3</td><td style="text-align:right">80.6%</td></tr>
+<tr><td>Gemma-4-31B</td><td style="text-align:right">77.1%</td></tr>
+<tr><td>50/50 blend (v3 to v5)</td><td style="text-align:right">79.6%</td></tr>
+<tr style="background:#13305F"><td><b>0.8 Kimi + 0.2 Gemma (v6, v7)</b></td><td style="text-align:right"><b>81.3%</b></td></tr>
+</table>
+<p style="font-size:28px;line-height:1.4">The blend beat either teacher alone. Where no teacher label existed, the previous release (v5) was the teacher.</p>
+</div>
+<div style="width:600px;display:flex;flex-direction:column;gap:16px;background:#0E1730;border:2px solid #1E3157;border-radius:16px;padding:36px">
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;color:#21C8FF;font-weight:600;letter-spacing:3px">HOW WE ASKED</p>
+<p style="font-size:28px;line-height:1.4;color:#F5F7FF">Send the exact training prompt. Allow one answer token. Return the top 20 next tokens with their probabilities.</p>
+<p style="font-size:28px;line-height:1.4;color:#F5F7FF">Keep only the option labels. Reject if under half the probability is on labels.</p>
+<div style="display:flex;gap:40px">
+<div style="display:flex;flex-direction:column;gap:4px"><p style="font-size:60px;font-weight:700;line-height:1.1;color:#21C8FF">$24.80</p><p style="font-size:24px;color:#AAB7D0">Kimi-K3, 34,357 q.</p></div>
+<div style="display:flex;flex-direction:column;gap:4px"><p style="font-size:60px;font-weight:700;line-height:1.1;color:#21C8FF">$1.96</p><p style="font-size:24px;color:#AAB7D0">Gemma-4-31B</p></div>
+</div>
+</div>
+</div>
+<aside>For the soft labels we used two large models through the OpenRouter API. For each training question we sent the exact prompt the student sees, allowed one answer token, and asked for the top 20 most likely first tokens with their probabilities. We kept only the option labels, and rejected an answer if less than half of the probability was on labels, for example when the teacher started to explain instead of answering. On 1,018 held-out questions Kimi-K3 was right 80.6 percent of the time and Gemma-4-31B 77.1 percent, and blending them 80/20 gave 81.3 percent, better than either alone. Labelling 34,357 questions cost $24.80 with Kimi and $1.96 with Gemma. Rows without an external label used the previous release, v5, as the teacher, which is called self-distillation.</aside>
+</section>

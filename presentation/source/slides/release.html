@@ -1,0 +1,34 @@
+<section id="release" data-transition="fade" style="background:#070B16;color:#AAB7D0;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:48px">
+<p style="position:absolute;left:128px;top:56px;width:1100px;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;color:#6F82A8;letter-spacing:3px">SYNACK DECIDE V7 // HOW WE TRAINED IT</p>
+<p style="position:absolute;right:128px;top:56px;width:300px;text-align:right;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;color:#6F82A8;letter-spacing:3px">23 / 25</p>
+<div style="display:flex;flex-direction:column;gap:16px;border-bottom:2px solid #1E3157;padding:0 0 28px 0">
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;color:#21C8FF;font-weight:600;letter-spacing:3px">THE RELEASE</p>
+<h2 style="font-size:72px;font-weight:600;line-height:1.1;color:#F5F7FF">One model, three formats, public</h2>
+</div>
+<div style="display:flex;gap:32px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;border-top:3px solid #21C8FF;padding:24px 0 0 0">
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;color:#21C8FF;font-weight:600;letter-spacing:2px">BF16</p>
+<p style="font-size:32px;font-weight:600;color:#F5F7FF">NVIDIA GPUs</p>
+<p style="font-size:26px;line-height:1.4">Full precision; the version that scored 59.54</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;border-top:3px solid #5C8DFF;padding:24px 0 0 0">
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;color:#5C8DFF;font-weight:600;letter-spacing:2px">MLX 8-BIT</p>
+<p style="font-size:32px;font-weight:600;color:#F5F7FF">Apple Silicon Macs</p>
+<p style="font-size:26px;line-height:1.4">25 GB; same decision on 97.6% of 500 PRs</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;border-top:3px solid #9B85FF;padding:24px 0 0 0">
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;color:#9B85FF;font-weight:600;letter-spacing:2px">GGUF</p>
+<p style="font-size:32px;font-weight:600;color:#F5F7FF">llama.cpp anywhere</p>
+<p style="font-size:26px;line-height:1.4">Q8_0 27 GB, Q4_K_M 17 GB; Q8_0 matches on 97.6% of 2,693 questions</p>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:16px;background:#0E1730;border:2px solid #1E3157;border-radius:12px;padding:32px 40px">
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;color:#7D8FB3;letter-spacing:2px">RECORDED COSTS FOR THE FINAL MODEL</p>
+<div style="display:flex;gap:64px">
+<div style="display:flex;flex-direction:column;gap:4px"><p style="font-size:60px;font-weight:700;line-height:1.1;color:#F5F7FF">$26.76</p><p style="font-size:24px">teacher labels</p></div>
+<div style="display:flex;flex-direction:column;gap:4px"><p style="font-size:60px;font-weight:700;line-height:1.1;color:#F5F7FF">~$26.90</p><p style="font-size:24px">v7 training job, 9 h 47 min</p></div>
+<div style="display:flex;flex-direction:column;gap:4px"><p style="font-size:60px;font-weight:700;line-height:1.1;color:#F5F7FF">~$26</p><p style="font-size:24px">full run (pre-launch estimate)</p></div>
+</div>
+</div>
+<aside>After training, the LoRA was merged into the Gemma weights and published in three formats on Hugging Face, all public: bf16 full precision for NVIDIA GPUs, which is the exact version that produced 59.54; an 8-bit MLX version for Apple Silicon Macs, 25 gigabytes, which makes the same routing decision as bf16 on 97.6 percent of 500 test pull requests; and GGUF files for llama.cpp, at 27 and 17 gigabytes, where Q8_0 gives the same answer on 97.6 percent of 2,693 held-out questions. Recorded costs for the final model: $26.76 of teacher labels, about $26.90 for the v7 training job including its evaluations, and about $26 estimated before launch for the complete leaderboard run; the final bill for that run was not recorded. Earlier versions and experiments cost extra and are not included here.</aside>
+</section>

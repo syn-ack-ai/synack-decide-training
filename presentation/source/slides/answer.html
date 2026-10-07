@@ -1,0 +1,33 @@
+<section id="answer" data-transition="fade" style="background:#070B16;color:#AAB7D0;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:48px">
+<p style="position:absolute;left:128px;top:56px;width:1100px;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;color:#6F82A8;letter-spacing:3px">SYNACK DECIDE V7 // HOW WE TRAINED IT</p>
+<p style="position:absolute;right:128px;top:56px;width:300px;text-align:right;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;color:#6F82A8;letter-spacing:3px">07 / 25</p>
+<div style="display:flex;flex-direction:column;gap:16px;border-bottom:2px solid #1E3157;padding:0 0 28px 0">
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;color:#21C8FF;font-weight:600;letter-spacing:3px">IN USE</p>
+<h2 style="font-size:72px;font-weight:600;line-height:1.1;color:#F5F7FF">From label scores to an answer</h2>
+</div>
+<div style="display:flex;gap:32px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#0C1428;border:2px solid #1E3157;border-radius:16px;padding:32px">
+<p style="font-size:44px;font-weight:700;color:#21C8FF">1</p>
+<p style="font-size:28px;color:#F5F7FF">One forward pass over the prompt</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#0C1428;border:2px solid #1E3157;border-radius:16px;padding:32px">
+<p style="font-size:44px;font-weight:700;color:#21C8FF">2</p>
+<p style="font-size:28px;color:#F5F7FF">Read the scores of A, B and C only</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#0C1428;border:2px solid #1E3157;border-radius:16px;padding:32px">
+<p style="font-size:44px;font-weight:700;color:#21C8FF">3</p>
+<p style="font-size:28px;color:#F5F7FF">Turn them into probabilities that add up to 1</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#0C1428;border:2px solid #1E3157;border-radius:16px;padding:32px">
+<p style="font-size:44px;font-weight:700;color:#21C8FF">4</p>
+<p style="font-size:28px;color:#F5F7FF">Map labels back to the option names</p>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:4px;background:#0E1730;border-radius:16px;padding:32px 40px;font-family:'IBM Plex Mono', 'Courier New', monospace">
+<p style="font-size:28px;color:#AAB7D0">"team":   {"choice": <span style="color:#21C8FF">"billing"</span>,</p>
+<p style="font-size:28px;color:#AAB7D0">           "probabilities": {"billing": 0.91, "shipping": 0.01, "technical": 0.08}},</p>
+<p style="font-size:28px;color:#AAB7D0">"urgent": {"noul": 0.87}          <span style="color:#8FA9C9">← p(yes); numbers illustrative</span></p>
+</div>
+<p style="font-size:28px;color:#F5F7FF">Always valid output · no text generated · more than 255 options returns "unsupported" instead of a guess</p>
+<aside>When the model is used, the engine builds the same prompt without shuffling, runs the model once, and looks only at the scores of the option labels at the answer position. A softmax turns those scores into probabilities that add up to one, and the labels are mapped back to the option names. The choice is simply the most likely option; for a yes/no question we report the probability of yes. Because nothing is generated, the output can never be malformed. Questions that share the same state, like the two here, reuse the state's computation, which made inference about 1.4 times faster.</aside>
+</section>

@@ -1,0 +1,34 @@
+<section id="onetoken" data-transition="fade" style="background:#070B16;color:#AAB7D0;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:40px">
+<p style="position:absolute;left:128px;top:56px;width:1100px;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;color:#6F82A8;letter-spacing:3px">SYNACK DECIDE V7 // HOW WE TRAINED IT</p>
+<p style="position:absolute;right:128px;top:56px;width:300px;text-align:right;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;color:#6F82A8;letter-spacing:3px">05 / 25</p>
+<div style="display:flex;flex-direction:column;gap:16px;border-bottom:2px solid #1E3157;padding:0 0 28px 0">
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;color:#21C8FF;font-weight:600;letter-spacing:3px">WHAT IS A TOKEN?</p>
+<h2 style="font-size:72px;font-weight:600;line-height:1.1;color:#F5F7FF">Why every answer is a single token</h2>
+</div>
+<div style="display:flex;gap:56px">
+<div style="flex:1;display:flex;flex-direction:column;gap:18px">
+<p style="font-size:28px;line-height:1.4;color:#F5F7FF">The model reads text as <b>tokens</b>: pieces from a fixed list of 262,144. Each has an ID number.</p>
+<p style="font-size:24px;color:#6F82A8;letter-spacing:2px">REAL SPLITS FROM GEMMA'S TOKENIZER</p>
+<div style="display:flex;flex-wrap:wrap;gap:8px;font-family:'IBM Plex Mono', 'Courier New', monospace">
+<p style="font-size:26px;color:#F5F7FF;background:#10254A;padding:4px 12px;border-radius:8px">Which</p><p style="font-size:26px;color:#F5F7FF;background:#10254A;padding:4px 12px;border-radius:8px">team</p><p style="font-size:26px;color:#F5F7FF;background:#10254A;padding:4px 12px;border-radius:8px">should</p><p style="font-size:26px;color:#F5F7FF;background:#10254A;padding:4px 12px;border-radius:8px">handle</p><p style="font-size:26px;color:#F5F7FF;background:#10254A;padding:4px 12px;border-radius:8px">this</p><p style="font-size:26px;color:#F5F7FF;background:#10254A;padding:4px 12px;border-radius:8px">ticket</p><p style="font-size:26px;color:#F5F7FF;background:#10254A;padding:4px 12px;border-radius:8px">first</p><p style="font-size:26px;color:#F5F7FF;background:#10254A;padding:4px 12px;border-radius:8px">?</p>
+</div>
+<p style="font-size:24px">a sentence: 8 tokens, mostly whole words</p>
+<div style="display:flex;flex-wrap:wrap;gap:8px;font-family:'IBM Plex Mono', 'Courier New', monospace">
+<p style="font-size:26px;color:#F5F7FF;background:#1A1440;padding:4px 12px;border-radius:8px">&lt;|turn&gt;</p><p style="font-size:26px;color:#F5F7FF;background:#1A1440;padding:4px 12px;border-radius:8px">&lt;turn|&gt;</p>
+</div>
+<p style="font-size:24px">a tag: 1 special token each; marks where a turn starts or ends</p>
+<div style="display:flex;flex-wrap:wrap;gap:8px;font-family:'IBM Plex Mono', 'Courier New', monospace">
+<p style="font-size:26px;color:#070B16;background:#21C8FF;padding:4px 12px;border-radius:8px"><b>C</b></p>
+</div>
+<p style="font-size:24px">the answer: 1 token</p>
+</div>
+<div style="width:700px;display:flex;flex-direction:column;gap:18px;background:#0E1730;border:2px solid #1E3157;border-radius:16px;padding:36px">
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;color:#21C8FF;font-weight:600;letter-spacing:2px">THE ANSWER LABELS</p>
+<p style="font-size:28px;line-height:1.4;color:#F5F7FF">Options are labelled like exam choices, then like spreadsheet columns:</p>
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:28px;line-height:1.5;color:#F5F7FF">A B C … Z<br>AA AB … AZ<br>BA … IV</p>
+<p style="font-size:28px;line-height:1.4">That is 255 labels, for up to 255 options. Each one is <b style="color:#21C8FF">a single token</b>, even AA and IV.</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.4;color:#F5F7FF">So right after the prompt, one step gives a score for every label at once: <b>the whole answer, with its probabilities, in one step.</b></p>
+<aside>A token is a piece of text from the model's fixed vocabulary of 262,144 pieces, each with an ID number. The model never sees letters or sentences directly, only a sequence of tokens. Common words are usually one token each: this question splits into 8. The tags in the prompt, like turn start and turn end, are special tokens, one each, that the chat format uses as structure. The answer is just the label, here C, which is one token. The labels work like exam choices and then like spreadsheet columns: A to Z, then AA, AB and so on, up to IV, for 255 labels in total. Every one of them is a single token in Gemma's vocabulary; AA is one token, not A plus A. We checked each one, and GZ is skipped because it is not a single token. Because the answer is always one token, the model's very first step after the prompt already gives a score for every label, so we can read the whole answer and its probabilities at once. If the answer were the option name, like technical support, it could take several tokens and several steps.</aside>
+</section>

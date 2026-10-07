@@ -1,0 +1,6 @@
+<section id="bigidea" data-transition="fade" style="background:linear-gradient(120deg, #0062B8 0%, #6A4EE6 100%);color:#F5F7FF;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:56px">
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:28px;font-weight:600;letter-spacing:2px">THE KEY IDEA</p>
+<h2 style="font-size:96px;font-weight:700;line-height:1.08;max-width:1600px">We never taught the model to write JSON.</h2>
+<p style="font-size:44px;line-height:1.35;max-width:1500px">We taught it one thing: the first token of its answer is always one of the option labels A, B, C … and then it stops.</p>
+<aside>This is the single most important idea in the talk. Gemma 4 is a chat model that writes free text. We did not try to make it write JSON or explanations. Instead we trained it so that its very first answer token is always one of the option labels. Everything structured, the choice and the probabilities, is then read straight from the model's scores for those label tokens. That gives one forward pass per question, no text generation, no parsing and an output that is always valid.</aside>
+</section>

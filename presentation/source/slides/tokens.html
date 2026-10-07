@@ -1,0 +1,25 @@
+<section id="tokens" data-transition="fade" style="background:#070B16;color:#AAB7D0;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:48px">
+<p style="position:absolute;left:128px;top:56px;width:1100px;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;color:#6F82A8;letter-spacing:3px">SYNACK DECIDE V7 // HOW WE TRAINED IT</p>
+<p style="position:absolute;right:128px;top:56px;width:300px;text-align:right;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;color:#6F82A8;letter-spacing:3px">09 / 25</p>
+<div style="display:flex;flex-direction:column;gap:16px;border-bottom:2px solid #1E3157;padding:0 0 28px 0">
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;color:#21C8FF;font-weight:600;letter-spacing:3px">HOW LEARNING WORKS · 1</p>
+<h2 style="font-size:72px;font-weight:600;line-height:1.1;color:#F5F7FF">The model scores every possible next token</h2>
+</div>
+<div style="display:flex;gap:80px;flex:1">
+<table style="width:760px;font-size:32px;color:#F5F7FF">
+<tr><th style="width:30%;text-align:left">Token</th><th style="width:35%;text-align:right">Score (logit)</th><th style="width:35%;text-align:right">Probability</th></tr>
+<tr><td style="font-family:'IBM Plex Mono', 'Courier New', monospace">A</td><td style="text-align:right">1.0</td><td style="text-align:right">0.058</td></tr>
+<tr><td style="font-family:'IBM Plex Mono', 'Courier New', monospace">B</td><td style="text-align:right">1.5</td><td style="text-align:right">0.096</td></tr>
+<tr style="background:#13305F"><td style="font-family:'IBM Plex Mono', 'Courier New', monospace"><b>C (right)</b></td><td style="text-align:right">2.0</td><td style="text-align:right"><b>0.158</b></td></tr>
+<tr><td style="font-family:'IBM Plex Mono', 'Courier New', monospace">The</td><td style="text-align:right">3.0</td><td style="text-align:right">0.429</td></tr>
+<tr><td style="font-family:'IBM Plex Mono', 'Courier New', monospace">Billing</td><td style="text-align:right">2.5</td><td style="text-align:right">0.260</td></tr>
+</table>
+<div style="flex:1;display:flex;flex-direction:column;gap:28px">
+<p style="font-size:32px;line-height:1.4">Gemma 4 knows <b>262,144 tokens</b>. For each one it outputs a score.</p>
+<p style="font-size:32px;line-height:1.4"><b>Softmax</b> turns scores into probabilities: raise <i>e</i> to each score, then divide by the total.</p>
+<p style="font-size:32px;line-height:1.4">Before training, a chat model wants to start a sentence. Only <b>15.8%</b> is on the right label.</p>
+<p style="font-size:24px;color:#7D8FB3">Toy example: 5 tokens, made-up scores, exact arithmetic</p>
+</div>
+</div>
+<aside>A language model reads tokens, which are pieces of text from a fixed vocabulary; Gemma 4 has 262,144 of them, and single letters like A, B and C are tokens too. Given the text so far, the model outputs one raw score, called a logit, for every token. Softmax turns the scores into probabilities: raise e, about 2.718, to the power of each score and divide by the total. Here, with a toy five-token vocabulary, the model before training puts most of its probability on starting a sentence with The or Billing. Only 15.8 percent is on C, the right label. Training is about moving probability onto C.</aside>
+</section>

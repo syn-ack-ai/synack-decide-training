@@ -1,0 +1,28 @@
+<section id="plain" data-transition="fade" style="background:radial-gradient(circle at 84% 12%, #0C2C5C 0%, #070B16 46%);color:#AAB7D0;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:44px">
+<p style="position:absolute;left:128px;top:56px;width:1100px;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;color:#6F82A8;letter-spacing:3px">SYNACK DECIDE V7 // HOW WE TRAINED IT</p>
+<p style="position:absolute;right:128px;top:56px;width:300px;text-align:right;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;color:#6F82A8;letter-spacing:3px">08 / 25</p>
+<div style="display:flex;flex-direction:column;gap:16px;border-bottom:2px solid #1E3157;padding:0 0 28px 0">
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;color:#21C8FF;font-weight:600;letter-spacing:3px">RECAP</p>
+<h2 style="font-size:72px;font-weight:600;line-height:1.1;color:#F5F7FF">In plain words</h2>
+</div>
+<div style="display:flex;gap:64px;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;gap:24px;align-items:start"><p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:32px;font-weight:600;color:#21C8FF">1</p><p style="font-size:32px;line-height:1.35;color:#F5F7FF">Each choice we give the model gets a label: A, B, C and so on. <b>Each label is a single token.</b></p></div>
+<div style="display:flex;gap:24px;align-items:start"><p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:32px;font-weight:600;color:#21C8FF">2</p><p style="font-size:32px;line-height:1.35;color:#F5F7FF">The model reads the question once and <b>scores every label in one step</b>.</p></div>
+<div style="display:flex;gap:24px;align-items:start"><p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:32px;font-weight:600;color:#21C8FF">3</p><p style="font-size:32px;line-height:1.35;color:#F5F7FF">We turn those scores into <b>probabilities that add up to 100%</b>.</p></div>
+<div style="display:flex;gap:24px;align-items:start"><p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:32px;font-weight:600;color:#21C8FF">4</p><p style="font-size:32px;line-height:1.35;color:#F5F7FF">We return the most likely option, <b>plus the probability of every option</b>, so you can see how sure it is.</p></div>
+</div>
+<div style="width:560px;display:flex;flex-direction:column;gap:20px;background:#0E1730;border:2px solid #1E3157;border-radius:16px;padding:36px">
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;color:#6F82A8;letter-spacing:2px">THE TICKET EXAMPLE</p>
+<table style="font-size:28px;color:#F5F7FF">
+<tr><th style="width:46%;text-align:left">Option</th><th style="width:20%;text-align:left">Label</th><th style="width:34%;text-align:right">Prob.</th></tr>
+<tr><td>shipping</td><td style="font-family:'IBM Plex Mono', 'Courier New', monospace">A</td><td style="text-align:right">0.01</td></tr>
+<tr><td>technical</td><td style="font-family:'IBM Plex Mono', 'Courier New', monospace">B</td><td style="text-align:right">0.08</td></tr>
+<tr style="background:#13305F"><td><b>billing</b></td><td style="font-family:'IBM Plex Mono', 'Courier New', monospace"><b>C</b></td><td style="text-align:right"><b>0.91</b></td></tr>
+</table>
+<p style="font-size:28px;line-height:1.4;color:#F5F7FF">Answer: <b style="color:#21C8FF">billing</b>, 91% sure.</p>
+<p style="font-size:24px;line-height:1.4">Probabilities run from 0 to 1, never below zero. Near 0 means unlikely. Numbers illustrative.</p>
+</div>
+</div>
+<aside>A one-slide recap of how the model answers, in plain words. Each choice gets a label, A, B, C and so on, and each label is a single token. The model reads the question once and scores every label in one step. We turn those scores into probabilities that add up to 100 percent. Then we return the most likely option, mapped back to its name, plus the probability of every option, so the caller can see how sure the model is. In the ticket example the model picks billing with 91 percent; technical gets 8 percent and shipping 1 percent. A spread like 0.91 against 0.08 means the model is confident; something like 0.45 against 0.40 would mean it is torn, and a system could then ask a person. The option descriptions themselves, like Billing and refunds, are ordinary text in the prompt and take several tokens; only the labels are single tokens.</aside>
+</section>

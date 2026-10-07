@@ -1,0 +1,29 @@
+<section id="teacher" data-transition="fade" style="background:#070B16;color:#AAB7D0;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:48px">
+<p style="position:absolute;left:128px;top:56px;width:1100px;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;color:#6F82A8;letter-spacing:3px">SYNACK DECIDE V7 // HOW WE TRAINED IT</p>
+<p style="position:absolute;right:128px;top:56px;width:300px;text-align:right;font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;color:#6F82A8;letter-spacing:3px">11 / 25</p>
+<div style="display:flex;flex-direction:column;gap:16px;border-bottom:2px solid #1E3157;padding:0 0 28px 0">
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:24px;color:#21C8FF;font-weight:600;letter-spacing:3px">HOW LEARNING WORKS · 3</p>
+<h2 style="font-size:72px;font-weight:600;line-height:1.1;color:#F5F7FF">Distillation: copy a stronger model's confidence</h2>
+</div>
+<div style="display:flex;gap:80px;flex:1">
+<div style="flex:1;display:flex;flex-direction:column;gap:28px">
+<p style="font-size:32px;line-height:1.4">The gold answer only says <b>"C is right"</b>. A big <b>teacher</b> model also knows how plausible A and B were.</p>
+<p style="font-size:32px;line-height:1.4">So the student also learns to match the teacher's probabilities over the options: <b>soft labels</b>.</p>
+<p style="font-size:32px;line-height:1.4;color:#F5F7FF"><b>Safety rule:</b> a teacher is used only when its top choice agrees with the gold answer.</p>
+</div>
+<div style="width:760px;display:flex;flex-direction:column;gap:24px">
+<table style="font-size:32px;color:#F5F7FF">
+<tr><th style="width:30%;text-align:left">Label</th><th style="width:35%;text-align:right">Teacher</th><th style="width:35%;text-align:right">Student</th></tr>
+<tr><td style="font-family:'IBM Plex Mono', 'Courier New', monospace">A</td><td style="text-align:right">0.02</td><td style="text-align:right">0.186</td></tr>
+<tr><td style="font-family:'IBM Plex Mono', 'Courier New', monospace">B</td><td style="text-align:right">0.06</td><td style="text-align:right">0.307</td></tr>
+<tr style="background:#13305F"><td style="font-family:'IBM Plex Mono', 'Courier New', monospace"><b>C</b></td><td style="text-align:right"><b>0.92</b></td><td style="text-align:right"><b>0.506</b></td></tr>
+</table>
+<div style="display:flex;flex-direction:column;gap:8px;background:#0E1730;border-radius:16px;padding:28px 32px">
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:28px;color:#F5F7FF">−(0.02·log 0.186 + 0.06·log 0.307</p>
+<p style="font-family:'IBM Plex Mono', 'Courier New', monospace;font-size:28px;color:#F5F7FF">  + 0.92·log 0.506) = <span style="color:#21C8FF">0.730</span></p>
+</div>
+<p style="font-size:24px;color:#7D8FB3">Student: softmax over A, B, C only. Teacher numbers illustrative.</p>
+</div>
+</div>
+<aside>The gold answer is a hard label: it only says C is right. A strong model knows more, for example that B, technical, was a reasonable second guess because the app was also crashing. Distillation means training the student to match a teacher's full probability list, called soft labels. We compare the teacher with the student's probabilities over the option labels only, and the loss is again a cross-entropy, now weighted by the teacher's probabilities; here it is 0.730, and it is smallest when the student's spread matches the teacher's. This is what teaches the model how confident to be. One safety rule: if the teacher's top choice disagrees with the gold answer, we ignore the teacher for that example, so the student never learns a teacher's mistakes. The teacher numbers here are illustrative; the arithmetic is exact.</aside>
+</section>

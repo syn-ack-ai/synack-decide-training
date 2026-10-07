@@ -1,0 +1,1754 @@
+[
+ {
+  "benchmark": "BFCL",
+  "area": "Tools & Automation (gold 1.2)",
+  "suite_source_split": "GitHub gorilla-llm/gorilla@916260d berkeley-function-call-leaderboard/data/BFCL_v3_{simple,live_simple,live_multiple}.json + possible_answer: ALL items (1,694 requests); per-tool yes/no 'invoke this tool?'",
+  "candidates": [
+   {
+    "hf_id": "github:gorilla-llm/gorilla@916260d berkeley-function-call-leaderboard/data",
+    "config": "BFCL_v3_{multiple,parallel,parallel_multiple,irrelevance,live_parallel,live_parallel_multiple,live_irrelevance,live_relevance}.json",
+    "split": "all",
+    "rows": "unverified",
+    "license": "Apache-2.0",
+    "gated": false,
+    "same_source": true,
+    "framing": "state={conversation, functions}; one yes/no question per published function ('Invoke this tool.' / 'Do not invoke this tool.'), gold from possible_answer; irrelevance/live_irrelevance -> all 'no'",
+    "distractor_method": "none needed (each schema in the row is a candidate); optionally add schemas from other rows as extra 'no' tools",
+    "risk": "MEDIUM: same benchmark family; live_irrelevance/live_relevance share user-contributed function docs with live_multiple; exec_* categories appear to re-use simple-style items (unverified) -> exclude exec_*, java, javascript, rest, sql; dedupe question text against simple/live_simple/live_multiple"
+   },
+   {
+    "hf_id": "Salesforce/xlam-function-calling-60k",
+    "config": "default",
+    "split": "train",
+    "rows": "60,000 per card (size API blocked by gating)",
+    "license": "CC-BY-4.0",
+    "gated": "auto (accept terms)",
+    "same_source": false,
+    "framing": "state={query, tools (JSON list)}; yes/no per tool = tool appears in answers",
+    "distractor_method": "pad tool list with tools sampled from other rows (all 'no')",
+    "risk": "HIGH-ish cross-benchmark: ToolRet's 'apigen' subset (1,000 queries) is drawn from APIGen/xLAM -> drop any query matching mangopy/ToolRet-Queries apigen text"
+   },
+   {
+    "hf_id": "argilla/apigen-function-calling",
+    "config": "default",
+    "split": "train",
+    "rows": 109402,
+    "license": "CC-BY-4.0",
+    "gated": false,
+    "same_source": false,
+    "framing": "same as xLAM (it merges xLAM-60k + Synth-APIGen)",
+    "distractor_method": "sample extra tools",
+    "risk": "same ToolRet-apigen overlap; dedupe"
+   },
+   {
+    "hf_id": "Team-ACE/ToolACE",
+    "config": "default",
+    "split": "train",
+    "rows": 11300,
+    "license": "Apache-2.0",
+    "gated": false,
+    "same_source": false,
+    "framing": "multi-turn: system prompt lists tools; take each assistant tool-call turn -> yes/no per listed tool",
+    "distractor_method": "other tools in the same system prompt are natural negatives",
+    "risk": "ToolRet 'toolace' subset (1,000 queries) comes from ToolACE -> dedupe against ToolRet-Queries toolace"
+   },
+   {
+    "hf_id": "glaiveai/glaive-function-calling-v2",
+    "config": "default",
+    "split": "train",
+    "rows": 112960,
+    "license": "Apache-2.0",
+    "gated": false,
+    "same_source": false,
+    "framing": "system prompt has 0-2 functions; yes/no per function; rows with no call -> all 'no'",
+    "distractor_method": "add 3-10 functions sampled from other rows",
+    "risk": "low; noisy synthetic"
+   },
+   {
+    "hf_id": "MadeAgents/xlam-irrelevance-7.5k",
+    "config": "default",
+    "split": "train",
+    "rows": 7500,
+    "license": "CC-BY-4.0",
+    "gated": false,
+    "same_source": false,
+    "framing": "irrelevance rows: every tool 'no'",
+    "distractor_method": "n/a",
+    "risk": "low; balance with positive rows"
+   }
+  ]
+ },
+ {
+  "benchmark": "ToolRet",
+  "area": "Tools & Automation",
+  "suite_source_split": "HF mangopy/ToolRet-Queries@b8c76ad (all 35 subsets, 7,704 queries; 1,000 stratified scored, 685 answerable in 0.2.1) x BM25 top-32 from mangopy/ToolRet-Tools@e06c38c; per-candidate yes/no relevance",
+  "candidates": [
+   {
+    "hf_id": "mangopy/ToolRet-Training-20w",
+    "config": "ToolRet-Training-20w",
+    "split": "train",
+    "rows": 208826,
+    "license": "not stated on card (repo LICENSE; aggregates upstream tool datasets)",
+    "gated": false,
+    "same_source": true,
+    "framing": "state={query, task instruction}; one yes/no question per candidate tool JSON (positives + listed hard negatives), up to 32 per request like the suite",
+    "distractor_method": "use provided 'negative' list; add BM25 negatives from ToolRet-Tools",
+    "risk": "MEDIUM: same project, built from the same upstream tool datasets as the eval queries; dedupe query text against all ToolRet-Queries; licence unstated"
+   },
+   {
+    "hf_id": "Team-ACE/ToolACE / Salesforce/xlam-function-calling-60k",
+    "config": "-",
+    "split": "train",
+    "rows": "see BFCL",
+    "license": "Apache-2.0 / CC-BY-4.0",
+    "gated": false,
+    "same_source": false,
+    "framing": "recast as retrieval: query + candidate tool -> yes/no",
+    "distractor_method": "BM25 negatives from a tool corpus",
+    "risk": "must dedupe against ToolRet 'toolace' and 'apigen' query subsets"
+   }
+  ],
+  "notes": "ToolRet eval subsets include apibank, apigen(xLAM), toolace, toolbench, gorilla, metatool, ultratool, tool-be-honest... any training set built from those upstreams needs text dedupe vs ToolRet-Queries."
+ },
+ {
+  "benchmark": "API-Bank",
+  "area": "Tools & Automation (gold 1.2)",
+  "suite_source_split": "GitHub AlibabaResearch/DAMO-ConvAI@188835d api-bank/lv1-lv2-samples/*.jsonl (all API turns, 508 requests); pick 1 of 53 catalog APIs",
+  "candidates": [
+   {
+    "hf_id": "liminghao1630/API-Bank",
+    "config": "training-data",
+    "split": "lv1-train.json, lv2-train.json, lv3-train.json (+ *-api-train, *-response-train)",
+    "rows": "unverified (files 26MB/27MB/1.8MB)",
+    "license": "MIT",
+    "gated": false,
+    "same_source": true,
+    "framing": "instruction/input/output records: dialogue + API descriptions -> API-Request. Recast: state={dialogue prefix, available_tools}; one choice question over the API names in the row plus sampled API names from other rows (match suite: ~50 options)",
+    "distractor_method": "sample API names/descriptions from other training records to reach ~50 options",
+    "risk": "LOW: multi-agent generated training set with its own APIs (not the 73 eval APIs). Do NOT use test-data/ folder (level-1/2/3 test = eval-equivalent)"
+   },
+   {
+    "hf_id": "github:AlibabaResearch/DAMO-ConvAI api-bank/lv3-samples",
+    "config": "lv3",
+    "split": "all",
+    "rows": "unverified",
+    "license": "MIT",
+    "gated": false,
+    "same_source": true,
+    "framing": "same tool-selection framing with lv3_apis catalog",
+    "distractor_method": "other lv3 APIs",
+    "risk": "LOW-MEDIUM: not in suite, but same authors/catalog style; small"
+   }
+  ]
+ },
+ {
+  "benchmark": "Home appliance simulator",
+  "area": "Tools & Automation",
+  "suite_source_split": "generated by decision_index/suite/build/home_appliance.py (seed 2026091807), 160 test rows (88 scored in 0.2.1); dev split (80 rows, households 0-7) written to layout.home/dev.jsonl",
+  "candidates": [
+   {
+    "hf_id": "local:decision_index/suite/build/home_appliance.py",
+    "config": "dev",
+    "split": "dev",
+    "rows": 80,
+    "license": "MIT",
+    "gated": false,
+    "same_source": true,
+    "framing": "identical to suite (state=home devices+request; resolution/target_member/outcome/state_read/post_n questions)",
+    "distractor_method": "generator's own",
+    "risk": "LOW-MEDIUM: 48 test rows had states identical to dev; those are dropped from scoring, so dev is fair game, but dedupe anyway"
+   },
+   {
+    "hf_id": "local:home_appliance.py with new SEED / offsets >= 10",
+    "config": "synthetic",
+    "split": "n/a",
+    "rows": "unlimited",
+    "license": "MIT",
+    "gated": false,
+    "same_source": true,
+    "framing": "same generator, new seeds",
+    "distractor_method": "generator's own",
+    "risk": "HIGH if not deduped: scenario space is small (24 exact duplicate states inside test). Drop any generated row whose sorted-key state equals ANY of the 160 test states; prefer new household/scenario templates"
+   }
+  ]
+ },
+ {
+  "benchmark": "When2Call",
+  "area": "Tools & Automation",
+  "suite_source_split": "HF nvidia/When2Call@0582f77 test/when2call_test_mcq.jsonl (3,652); A..D = direct answer / tool call / ask for info / cannot answer",
+  "candidates": [
+   {
+    "hf_id": "nvidia/When2Call",
+    "config": "train_sft",
+    "split": "train",
+    "rows": 15000,
+    "license": "CC-BY-4.0 (HF card; GitHub code Apache-2.0)",
+    "gated": false,
+    "same_source": true,
+    "framing": "state={tools, question}; 4 options in the suite's fixed order (direct, tool call, follow-up question, cannot answer); gold = category of the SFT target",
+    "distractor_method": "generate the 3 non-gold responses: tool call JSON from listed tools, a templated/LLM clarifying question, a templated 'I can't do that with these tools', and an LLM direct answer",
+    "risk": "LOW-MEDIUM: same synthetic pipeline as test; dedupe question text vs test MCQ; do not use test/llm_judge (300)"
+   },
+   {
+    "hf_id": "nvidia/When2Call",
+    "config": "train_pref",
+    "split": "train",
+    "rows": 9000,
+    "license": "CC-BY-4.0",
+    "gated": false,
+    "same_source": true,
+    "framing": "chosen = gold option; rejected = one distractor; fill remaining categories synthetically",
+    "distractor_method": "rejected response + 2 synthesized",
+    "risk": "as above"
+   }
+  ]
+ },
+ {
+  "benchmark": "BANKING77",
+  "area": "Retrieval & Classification (gold 1.2)",
+  "suite_source_split": "GitHub PolyAI-LDN/task-specific-datasets master banking_data/test.csv (3,080, sha256 pinned); 77 options",
+  "candidates": [
+   {
+    "hf_id": "legacy-datasets/banking77 (== GitHub banking_data/train.csv)",
+    "config": "default",
+    "split": "train",
+    "rows": 10003,
+    "license": "CC-BY-4.0",
+    "gated": false,
+    "same_source": true,
+    "framing": "exact suite framing: instructions='Classify the banking intent of this user request:\\n<text>', state {}, 77 options option_0.. in categories.json order",
+    "distractor_method": "n/a (full label space)",
+    "risk": "VERIFIED: 7 test texts appear verbatim (case/space-normalized) in train, 4 duplicate texts inside train -> drop those 7 from training (also from the tev1 Banking77 copy). mteb/banking77 train has 9,993 rows (pre-deduped variant)"
+   },
+   {
+    "hf_id": "mteb/amazon_massive_intent",
+    "config": "en",
+    "split": "train",
+    "rows": 11514,
+    "license": "Apache-2.0 on mirror (MASSIVE original CC-BY-4.0)",
+    "gated": false,
+    "same_source": false,
+    "framing": "same intent framing, 60 intents",
+    "distractor_method": "full label space",
+    "risk": "low"
+   },
+   {
+    "hf_id": "DeepPavlov/hwu64",
+    "config": "default",
+    "split": "train",
+    "rows": 8954,
+    "license": "not stated on card",
+    "gated": false,
+    "same_source": false,
+    "framing": "64-intent framing",
+    "distractor_method": "full label space",
+    "risk": "low; licence unverified"
+   }
+  ]
+ },
+ {
+  "benchmark": "CLINC150+OOS",
+  "area": "Retrieval & Classification (gold 1.2)",
+  "suite_source_split": "GitHub clinc/oos-eval master data/data_full.json splits test (4,500) + oos_test (1,000); 151 options",
+  "candidates": [
+   {
+    "hf_id": "clinc/clinc_oos (== data_full.json train+oos_train)",
+    "config": "plus",
+    "split": "train / validation",
+    "rows": "15,250 / 3,100",
+    "license": "CC-BY-3.0",
+    "gated": false,
+    "same_source": true,
+    "framing": "exact suite framing, 151 options (label names with '_'->' ', 'out of scope: none of the listed intents')",
+    "distractor_method": "n/a",
+    "risk": "VERIFIED: 2 test texts appear verbatim in train/val -> drop. Never use 'test' of any config (== suite)"
+   }
+  ]
+ },
+ {
+  "benchmark": "BRIGHT",
+  "area": "Retrieval & Classification (gold 1.2)",
+  "suite_source_split": "HF xlangai/BRIGHT@3066d29 examples/*.parquet all 12 domains (1,297 queries; 550 scored, 220 answerable) x BM25 top-32 from documents/*; per-doc yes/no",
+  "candidates": [
+   {
+    "hf_id": "sentence-transformers/stackexchange-duplicates",
+    "config": "title-title-pair / body-body-pair / post-post-pair",
+    "split": "train",
+    "rows": "304,525 / 250,460 / 250,519",
+    "license": "not stated (StackExchange CC BY-SA)",
+    "gated": false,
+    "same_source": false,
+    "framing": "state={query: post}; candidate post -> yes/no relevant; 1 positive + BM25 negatives, up to 32 per request",
+    "distractor_method": "BM25 negatives over the same dump",
+    "risk": "MEDIUM: BRIGHT queries are StackExchange posts (biology, earth science, economics, psychology, robotics, stackoverflow, sustainable living) -> dedupe titles/bodies against BRIGHT examples"
+   },
+   {
+    "hf_id": "reasonir/reasonir-data",
+    "config": "-",
+    "split": "-",
+    "rows": "unverified",
+    "license": "CC-BY-NC-4.0",
+    "gated": false,
+    "same_source": false,
+    "framing": "reasoning-intensive query + doc -> yes/no",
+    "distractor_method": "given hard negatives",
+    "risk": "HIGH-ish: ReasonIR synthesis reportedly seeded from BRIGHT-like datastores (unverified whether BRIGHT documents) -> candidate-doc overlap; non-commercial"
+   },
+   {
+    "hf_id": "microsoft/ms_marco",
+    "config": "v2.1",
+    "split": "train",
+    "rows": 808731,
+    "license": "not stated on card (MS MARCO terms: non-commercial research)",
+    "gated": false,
+    "same_source": false,
+    "framing": "query + passage -> yes/no (is_selected)",
+    "distractor_method": "unselected passages of the same query",
+    "risk": "low overlap; licence NC"
+   }
+  ],
+  "notes": "Never use BRIGHT documents/long_documents as training positives (they are the candidate pool). Avoid TheoremQA (BRIGHT theoremqa_* domains + MMLU-Pro source)."
+ },
+ {
+  "benchmark": "Amazon ESCI",
+  "area": "Retrieval & Classification",
+  "suite_source_split": "GitHub amazon-science/esci-data@7916cdf shopping_queries_dataset_examples.parquet rows with split=='test' (all locales), 5,000 pairs stratified locale x label",
+  "candidates": [
+   {
+    "hf_id": "tasksource/esci",
+    "config": "default",
+    "split": "train",
+    "rows": 2027874,
+    "license": "Apache-2.0",
+    "gated": false,
+    "same_source": true,
+    "framing": "exact: state={search_query, product{title,description,bullet_point,brand,color}}; E/S/C/I criteria verbatim",
+    "distractor_method": "n/a (4 fixed labels)",
+    "risk": "LOW: ESCI splits by query; tasksource 'test' (652,490) = original test -> NEVER; keep locale mix (us/es/jp) and label balance like suite"
+   },
+   {
+    "hf_id": "github:amazon-science/esci-data shopping_queries_dataset_examples.parquet",
+    "config": "split=='train'",
+    "split": "train",
+    "rows": "unverified",
+    "license": "Apache-2.0",
+    "gated": false,
+    "same_source": true,
+    "framing": "same",
+    "distractor_method": "n/a",
+    "risk": "same; parquet is git-LFS ~2GB total with products"
+   }
+  ]
+ },
+ {
+  "benchmark": "PhishNChips",
+  "area": "Retrieval & Classification",
+  "suite_source_split": "HF AreLit/PhishNChips@89afcc3 core_emails.csv (all 2,000); verdict phishing/legitimate scored",
+  "candidates": [
+   {
+    "hf_id": "AreLit/PhishNChips",
+    "config": "emails",
+    "split": "real_phishing_validation",
+    "rows": 1000,
+    "license": "other (SOURCE_LICENSES.md; MIT project content)",
+    "gated": false,
+    "same_source": true,
+    "framing": "state={sender, from, subject, body, link_url}; verdict question phishing vs legitimate (copy suite wording)",
+    "distractor_method": "n/a (binary)",
+    "risk": "LOW-MEDIUM: historical Nazario phishing, all positive class -> pair with legit mail"
+   },
+   {
+    "hf_id": "AreLit/PhishNChips",
+    "config": "emails",
+    "split": "cross_domain_legitimate_v5 (333) / infrastructure_phishing_expanded (54)",
+    "rows": "333 / 54",
+    "license": "other",
+    "gated": false,
+    "same_source": true,
+    "framing": "same",
+    "distractor_method": "n/a",
+    "risk": "NEVER USE: card says core already contains the 333 cross-domain legit samples -> likely duplicates of eval rows; use only after exact email-text dedupe vs core. Config 'results' (benchmark_results) carries labels for core emails -> NEVER"
+   },
+   {
+    "hf_id": "puyang2025/seven-phishing-email-datasets",
+    "config": "default",
+    "split": "train",
+    "rows": 162413,
+    "license": "other",
+    "gated": false,
+    "same_source": false,
+    "framing": "same framing; extract first URL as link_url (urls flag)",
+    "distractor_method": "n/a",
+    "risk": "low; mixed old corpora (TREC-07, Nazario...)"
+   },
+   {
+    "hf_id": "zefang-liu/phishing-email-dataset",
+    "config": "default",
+    "split": "train",
+    "rows": 18650,
+    "license": "LGPL-3.0",
+    "gated": false,
+    "same_source": false,
+    "framing": "same",
+    "distractor_method": "n/a",
+    "risk": "low"
+   },
+   {
+    "hf_id": "cybersectony/PhishingEmailDetectionv2.0",
+    "config": "default",
+    "split": "train",
+    "rows": 120000,
+    "license": "not stated",
+    "gated": false,
+    "same_source": false,
+    "framing": "same (also URL rows)",
+    "distractor_method": "n/a",
+    "risk": "licence unverified"
+   }
+  ]
+ },
+ {
+  "benchmark": "HoVer",
+  "area": "Retrieval & Classification",
+  "suite_source_split": "GitHub hover-nlp/hover@39b8469 data/hover/hover_dev_release_v1.1.json (all 4,000 dev claims) + oracle Wikipedia intros from wiki_wo_links.db",
+  "candidates": [
+   {
+    "hf_id": "vincentkoc/hover-parquet (== hover_train_release_v1.1.json)",
+    "config": "default",
+    "split": "train",
+    "rows": 18171,
+    "license": "MIT on mirror; original data CC-BY-SA-4.0",
+    "gated": false,
+    "same_source": true,
+    "framing": "state={claim, evidence: intro of every doc in supporting_facts}; SUPPORTED / NOT_SUPPORTED",
+    "distractor_method": "n/a",
+    "risk": "LOW for train; mirror 'validation' (4,000) == suite dev -> NEVER. Building state needs the 2.2GB wiki_wo_links.db"
+   },
+   {
+    "hf_id": "copenlu/fever_gold_evidence",
+    "config": "default",
+    "split": "train",
+    "rows": 228277,
+    "license": "CC-BY-SA-3.0 (+gpl-3.0 tag)",
+    "gated": false,
+    "same_source": false,
+    "framing": "claim + gold evidence sentences; SUPPORTS -> SUPPORTED, REFUTES/NEI -> NOT_SUPPORTED",
+    "distractor_method": "n/a",
+    "risk": "low"
+   }
+  ]
+ },
+ {
+  "benchmark": "ContractNLI",
+  "area": "Language Understanding",
+  "suite_source_split": "GitHub stanfordnlp/contract-nli@eced652 resources/contract-nli.zip test.json (123 docs x 17 hypotheses)",
+  "candidates": [
+   {
+    "hf_id": "github:stanfordnlp/contract-nli resources/contract-nli.zip",
+    "config": "train.json / dev.json",
+    "split": "train / dev",
+    "rows": "unverified (paper: 423 / 61 docs x 17)",
+    "license": "CC-BY-4.0 (repo licence)",
+    "gated": false,
+    "same_source": true,
+    "framing": "exact: state = full contract text; 17 questions (one per hypothesis) Entailment/Contradiction/NotMentioned",
+    "distractor_method": "n/a",
+    "risk": "LOW; zip is 65MB"
+   },
+   {
+    "hf_id": "kiddothe2b/contract-nli",
+    "config": "contractnli_b",
+    "split": "train / validation",
+    "rows": "7,191 / 1,037",
+    "license": "CC-BY-NC-SA-4.0 (mirror)",
+    "gated": false,
+    "same_source": true,
+    "framing": "pair-level NLI",
+    "distractor_method": "n/a",
+    "risk": "its 'test' split = official test docs -> NEVER; NC licence"
+   }
+  ]
+ },
+ {
+  "benchmark": "ANLI",
+  "area": "Language Understanding (gold 1.2)",
+  "suite_source_split": "HF facebook/anli@8e4813d plain_text/test_r{1,2,3} (3,200)",
+  "candidates": [
+   {
+    "hf_id": "facebook/anli",
+    "config": "plain_text",
+    "split": "train_r1 / train_r2 / train_r3 / dev_r1-3",
+    "rows": "16,946 / 45,460 / 100,459 / 1,000+1,000+1,200",
+    "license": "CC-BY-NC-4.0",
+    "gated": false,
+    "same_source": true,
+    "framing": "exact: instructions 'Classify the relationship between the premise and hypothesis.\\nPremise: ...\\nHypothesis: ...', options entailment/neutral/contradiction",
+    "distractor_method": "n/a",
+    "risk": "NON-COMMERCIAL licence; premises are reused across hypotheses (dedupe exact premise+hypothesis vs test)"
+   },
+   {
+    "hf_id": "stanfordnlp/snli",
+    "config": "plain_text",
+    "split": "train",
+    "rows": 550152,
+    "license": "CC-BY-SA-4.0",
+    "gated": false,
+    "same_source": false,
+    "framing": "same 3-way framing (drop label -1)",
+    "distractor_method": "n/a",
+    "risk": "low"
+   }
+  ]
+ },
+ {
+  "benchmark": "WinoGrande",
+  "area": "Language Understanding (gold 1.2)",
+  "suite_source_split": "HF allenai/winogrande@01e7417 winogrande_xl/validation (1,267)",
+  "candidates": [
+   {
+    "hf_id": "allenai/winogrande",
+    "config": "winogrande_xl",
+    "split": "train",
+    "rows": 40398,
+    "license": "not on card (AI2: CC-BY, unverified)",
+    "gated": false,
+    "same_source": true,
+    "framing": "exact: 'Which option correctly fills the blank? <sentence>', A/B = option1/option2",
+    "distractor_method": "n/a",
+    "risk": "LOW; debiased/l/m/s/xs trains are subsets of xl train; 'test' (1,767) unlabeled"
+   }
+  ]
+ },
+ {
+  "benchmark": "HellaSwag",
+  "area": "Language Understanding (gold 1.2)",
+  "suite_source_split": "HF Rowan/hellaswag@218ec52 data/validation (10,042)",
+  "candidates": [
+   {
+    "hf_id": "Rowan/hellaswag",
+    "config": "default",
+    "split": "train",
+    "rows": 39905,
+    "license": "MIT",
+    "gated": false,
+    "same_source": true,
+    "framing": "exact: 'Which continuation is most plausible? <ctx>', A-D endings",
+    "distractor_method": "n/a",
+    "risk": "LOW-MEDIUM: same ActivityNet/WikiHow source pools; ctx overlap with val unverified -> dedupe ctx strings"
+   },
+   {
+    "hf_id": "allenai/swag",
+    "config": "regular",
+    "split": "train",
+    "rows": 73546,
+    "license": "unknown",
+    "gated": false,
+    "same_source": false,
+    "framing": "4-way continuation",
+    "distractor_method": "n/a",
+    "risk": "ActivityNet captions shared with HellaSwag val (possible ctx overlap) -> dedupe"
+   }
+  ]
+ },
+ {
+  "benchmark": "ACOS",
+  "area": "Language Understanding",
+  "suite_source_split": "GitHub NUSTM/ACOS@45d179a data/{Laptop-ACOS,Restaurant-ACOS}/*_quad_test.tsv (816 + 583 reviews; 400 scored); train/dev files are read only to build the category inventory",
+  "candidates": [
+   {
+    "hf_id": "github:NUSTM/ACOS data/*/*_quad_train.tsv, *_quad_dev.tsv",
+    "config": "Laptop / Restaurant",
+    "split": "train / dev",
+    "rows": "laptop 2,934 / 326; rest16 1,530 / 171 (VERIFIED line counts)",
+    "license": "not stated in repo",
+    "gated": false,
+    "same_source": true,
+    "framing": "exact: state={review}; up to 64 yes/no questions per request, one per (category, sentiment) in the domain inventory",
+    "distractor_method": "n/a (all inventory pairs; most 'no')",
+    "risk": "LICENCE unstated. Rest16 test reviews come from SemEval-2016 ABSA test -> never use SemEval-2016 restaurant test mirrors"
+   }
+  ]
+ },
+ {
+  "benchmark": "FinEntity",
+  "area": "Language Understanding",
+  "suite_source_split": "GitHub yixuantt/FinEntity@3b6cedc data/FinEntity.json (ALL 979 docs)",
+  "candidates": [
+   {
+    "hf_id": "yixuantt/FinEntity",
+    "config": "default",
+    "split": "train",
+    "rows": 979,
+    "license": "ODC-BY",
+    "gated": false,
+    "same_source": true,
+    "framing": "-",
+    "distractor_method": "-",
+    "risk": "NEVER USE: this 'train' split IS the full suite source"
+   },
+   {
+    "hf_id": "TheFinAI/fiqa-sentiment-classification",
+    "config": "default",
+    "split": "train",
+    "rows": 822,
+    "license": "MIT",
+    "gated": false,
+    "same_source": false,
+    "framing": "state={document}; entity span given; Negative/Neutral/Positive from score thresholds",
+    "distractor_method": "n/a",
+    "risk": "low"
+   },
+   {
+    "hf_id": "zeroshot/twitter-financial-news-sentiment",
+    "config": "default",
+    "split": "train",
+    "rows": 9543,
+    "license": "MIT",
+    "gated": false,
+    "same_source": false,
+    "framing": "sentence-level label mapped to the cashtag/company span",
+    "distractor_method": "n/a",
+    "risk": "low (sentence- not entity-level)"
+   },
+   {
+    "hf_id": "takala/financial_phrasebank",
+    "config": "sentences_allagree etc.",
+    "split": "train",
+    "rows": "unverified",
+    "license": "CC-BY-NC-SA-3.0",
+    "gated": false,
+    "same_source": false,
+    "framing": "sentence sentiment with LLM-extracted entity span",
+    "distractor_method": "n/a",
+    "risk": "NC licence; HF viewer broken (script)"
+   }
+  ]
+ },
+ {
+  "benchmark": "iSarcasmEval",
+  "area": "Language Understanding",
+  "suite_source_split": "GitHub iabufarha/iSarcasmEval@dfc708b test/task_{A,B,C}_{En,Ar}_test.csv",
+  "candidates": [
+   {
+    "hf_id": "github:iabufarha/iSarcasmEval train/train.En.csv, train.Ar.csv",
+    "config": "En / Ar",
+    "split": "train",
+    "rows": "3,468 / 3,102 (VERIFIED)",
+    "license": "MIT (repo)",
+    "gated": false,
+    "same_source": true,
+    "framing": "Task A: tweet as state, 'Is this text intended to be sarcastic?' yes/no; Task B: 6 yes/no category questions (sarcasm, irony, satire, understatement, overstatement, rhetorical_question) for sarcastic En rows; Task C: tweet vs 'rephrase' -> which is sarcastic",
+    "distractor_method": "n/a",
+    "risk": "'third-party annotations/*' annotate the TEST tweets -> NEVER"
+   },
+   {
+    "hf_id": "cardiffnlp/tweet_eval",
+    "config": "irony",
+    "split": "train",
+    "rows": 2862,
+    "license": "unknown",
+    "gated": false,
+    "same_source": false,
+    "framing": "irony yes/no",
+    "distractor_method": "n/a",
+    "risk": "low"
+   }
+  ]
+ },
+ {
+  "benchmark": "VAST",
+  "area": "Language Understanding",
+  "suite_source_split": "GitHub emilyallaway/zero-shot-stance@e7c4775 data/VAST/vast_test.csv",
+  "candidates": [
+   {
+    "hf_id": "github:emilyallaway/zero-shot-stance data/VAST/vast_train.csv, vast_dev.csv",
+    "config": "-",
+    "split": "train / dev",
+    "rows": "unverified (30MB / 4.5MB; paper ~13.5k train)",
+    "license": "not stated",
+    "gated": false,
+    "same_source": true,
+    "framing": "exact: instructions 'Topic: <topic> Post: <post>', options against/favor/neutral",
+    "distractor_method": "n/a",
+    "risk": "LICENCE unstated; vast_test-sentswap.csv is a test variant -> NEVER; posts may repeat across splits with different topics (unverified) -> dedupe post text vs test"
+   },
+   {
+    "hf_id": "cardiffnlp/tweet_eval",
+    "config": "stance_{abortion,atheism,climate,feminist,hillary}",
+    "split": "train",
+    "rows": "587/461/355/597/620",
+    "license": "unknown",
+    "gated": false,
+    "same_source": false,
+    "framing": "topic + tweet -> against/favor/none",
+    "distractor_method": "n/a",
+    "risk": "low"
+   },
+   {
+    "hf_id": "ibm-research/claim_stance",
+    "config": "claim_stance_topic",
+    "split": "train",
+    "rows": 1675,
+    "license": "CC-BY-3.0",
+    "gated": false,
+    "same_source": false,
+    "framing": "topic + claim -> pro/con",
+    "distractor_method": "n/a",
+    "risk": "low"
+   }
+  ]
+ },
+ {
+  "benchmark": "NLI4CT",
+  "area": "Language Understanding",
+  "suite_source_split": "GitHub ai-systems/Task-2-SemEval-2024@7f32fa6 test.json + gold_test.json (5,500 statements) with trial docs",
+  "candidates": [
+   {
+    "hf_id": "tasksource/nli4ct (== training_data.zip train.json/dev.json)",
+    "config": "default",
+    "split": "train / validation",
+    "rows": "1,700 / 200",
+    "license": "not stated (SemEval-2024 Task 2 terms)",
+    "gated": false,
+    "same_source": true,
+    "framing": "exact: state={primary_trial section text, secondary if comparison}; Entailment/Contradiction",
+    "distractor_method": "n/a",
+    "risk": "VERIFIED: 0 test statements appear in train/dev; 100 of 249 test primary trials also appear in train/dev (shared evidence, different statements) -> acceptable"
+   },
+   {
+    "hf_id": "github:ai-systems/Task-2-SemEval-2024 practice_test.json + gold_practice_test.json",
+    "config": "practice",
+    "split": "practice",
+    "rows": 2142,
+    "license": "not stated",
+    "gated": false,
+    "same_source": true,
+    "framing": "same",
+    "distractor_method": "n/a",
+    "risk": "VERIFIED 0 statement overlap with test; 198 overlap with train/dev (dedupe)"
+   }
+  ]
+ },
+ {
+  "benchmark": "RAGTruth",
+  "area": "Language Understanding",
+  "suite_source_split": "GitHub ParticleMedia/RAGTruth@c103204 dataset/{response,source_info}.jsonl, ALL test responses (2,700); noul 'contains unsupported content'",
+  "candidates": [
+   {
+    "hf_id": "wandb/RAGTruth-processed",
+    "config": "default",
+    "split": "train",
+    "rows": 15090,
+    "license": "not stated on mirror (original annotations MIT)",
+    "gated": false,
+    "same_source": true,
+    "framing": "state={prompt (query+context), response}; noul true if hallucination_labels non-empty",
+    "distractor_method": "n/a",
+    "risk": "LOW for train; mirror 'test' (2,700) == suite -> NEVER; whether train/test share source passages unverified (check source_id); contexts include MS MARCO (non-commercial) and Yelp (no redistribution)"
+   },
+   {
+    "hf_id": "pminervini/HaluEval",
+    "config": "qa / summarization / dialogue",
+    "split": "data",
+    "rows": "10,000 each",
+    "license": "Apache-2.0",
+    "gated": false,
+    "same_source": false,
+    "framing": "each item -> 2 noul rows (right vs hallucinated answer)",
+    "distractor_method": "built-in hallucinated answer",
+    "risk": "low; synthetic hallucinations easier than RAGTruth"
+   },
+   {
+    "hf_id": "McGill-NLP/FaithDial",
+    "config": "plain_text",
+    "split": "train",
+    "rows": 18357,
+    "license": "MIT",
+    "gated": false,
+    "same_source": false,
+    "framing": "knowledge + response -> unsupported? (BEGIN tags)",
+    "distractor_method": "n/a",
+    "risk": "low"
+   }
+  ]
+ },
+ {
+  "benchmark": "GPQA Diamond",
+  "area": "Knowledge & Reasoning (gold 1.2)",
+  "suite_source_split": "GitHub idavidrein/gpqa dataset.zip gpqa_diamond.csv (198)",
+  "candidates": [
+   {
+    "hf_id": "Idavidrein/gpqa",
+    "config": "gpqa_main / gpqa_extended",
+    "split": "train",
+    "rows": "448 / 546 per paper",
+    "license": "CC-BY-4.0",
+    "gated": "auto",
+    "same_source": true,
+    "framing": "-",
+    "distractor_method": "-",
+    "risk": "NEVER USE: main/extended are supersets of Diamond"
+   },
+   {
+    "hf_id": "m-a-p/SuperGPQA",
+    "config": "default",
+    "split": "train (it is a benchmark)",
+    "rows": 26529,
+    "license": "ODC-BY",
+    "gated": false,
+    "same_source": false,
+    "framing": "question in instructions, A.. options (up to 10)",
+    "distractor_method": "native",
+    "risk": "LOW (not in suite); GPQA overlap unverified -> fuzzy-dedupe vs GPQA"
+   },
+   {
+    "hf_id": "openlifescienceai/medmcqa",
+    "config": "default",
+    "split": "train",
+    "rows": 182822,
+    "license": "Apache-2.0",
+    "gated": false,
+    "same_source": false,
+    "framing": "4-option MCQ",
+    "distractor_method": "native",
+    "risk": "low"
+   }
+  ]
+ },
+ {
+  "benchmark": "GSM8K",
+  "area": "Knowledge & Reasoning",
+  "suite_source_split": "HF openai/gsm8k@740312a main/test (1,319) x {4-choice, 10-choice} = 2,638; deterministic numeric distractors seed 20260917",
+  "candidates": [
+   {
+    "hf_id": "openai/gsm8k",
+    "config": "main",
+    "split": "train",
+    "rows": 7473,
+    "license": "MIT",
+    "gated": false,
+    "same_source": true,
+    "framing": "state={question}; 'Choose the numeric answer...'; make both a 4-option and a 10-option row",
+    "distractor_method": "emulate suite: near-misses of gold (+-1, +-10%, x10, /10, digit swap), intermediate values from the <<a=b>> calculator annotations, unique and shuffled",
+    "risk": "LOW; GSM-Plus/GSM-Hard/GSM-Symbolic/GSM1k-like sets derived from GSM8K TEST -> NEVER"
+   },
+   {
+    "hf_id": "meta-math/MetaMathQA",
+    "config": "default",
+    "split": "train",
+    "rows": 395000,
+    "license": "MIT",
+    "gated": false,
+    "same_source": false,
+    "framing": "same numeric framing (GSM-type rows)",
+    "distractor_method": "same numeric generator",
+    "risk": "low (augmented from GSM8K/MATH train)"
+   },
+   {
+    "hf_id": "deepmind/aqua_rat",
+    "config": "raw",
+    "split": "train",
+    "rows": 97467,
+    "license": "Apache-2.0",
+    "gated": false,
+    "same_source": false,
+    "framing": "native 5-option MCQ",
+    "distractor_method": "native",
+    "risk": "low"
+   }
+  ]
+ },
+ {
+  "benchmark": "ChessBench",
+  "area": "Knowledge & Reasoning",
+  "suite_source_split": "storage.googleapis.com/searchless_chess/data/test/action_value_data.bag (5,000 seeded positions); options = all legal moves (up to 81); any tied best accepted",
+  "candidates": [
+   {
+    "hf_id": "gcs:searchless_chess/data/train/action_value-00000-of-02148_data.bag",
+    "config": "train shard 0 (1.2GB of 1.1TB)",
+    "split": "train",
+    "rows": "unverified",
+    "license": "CC-BY-4.0 + CC0 (lichess) per repo README",
+    "gated": false,
+    "same_source": true,
+    "framing": "exact: state={fen, board, side_to_move}; options = every legal move {uci, san}; gold = max Stockfish win-prob move",
+    "distractor_method": "n/a (all legal moves)",
+    "risk": "MEDIUM: ChessBench train/test share common positions (openings) -> drop any FEN (piece placement+side+castling) present in the 5,000 suite rows"
+   },
+   {
+    "hf_id": "Lichess/chess-puzzles",
+    "config": "default",
+    "split": "train",
+    "rows": 6100952,
+    "license": "CC0-1.0",
+    "gated": false,
+    "same_source": false,
+    "framing": "FEN after the opponent's first move; options all legal moves; gold = Moves[1]",
+    "distractor_method": "n/a",
+    "risk": "low; dedupe FEN vs suite"
+   },
+   {
+    "hf_id": "Lichess/chess-position-evaluations",
+    "config": "default",
+    "split": "train",
+    "rows": 988851570,
+    "license": "CC0-1.0",
+    "gated": false,
+    "same_source": false,
+    "framing": "FEN -> first move of Stockfish PV",
+    "distractor_method": "n/a",
+    "risk": "low; huge, sample"
+   }
+  ]
+ },
+ {
+  "benchmark": "MuSR",
+  "area": "Knowledge & Reasoning",
+  "suite_source_split": "GitHub Zayne-sprague/MuSR@b1f4d41 datasets/*.json (ALL 756 questions)",
+  "candidates": [
+   {
+    "hf_id": "TAUR-Lab/MuSR",
+    "config": "default",
+    "split": "murder_mysteries / object_placements / team_allocation",
+    "rows": "250 / 256 / 250",
+    "license": "CC-BY-4.0",
+    "gated": false,
+    "same_source": true,
+    "framing": "-",
+    "distractor_method": "-",
+    "risk": "NEVER USE: same items as suite"
+   },
+   {
+    "hf_id": "github:Zayne-sprague/MuSR src/dataset_builder.py + domain_seed/",
+    "config": "synthetic",
+    "split": "n/a",
+    "rows": "generate",
+    "license": "MIT",
+    "gated": false,
+    "same_source": true,
+    "framing": "generate new narratives with an LLM; context+question as instructions, original choices",
+    "distractor_method": "generator's choices",
+    "risk": "LOW if deduped vs datasets/*.json and viewer/small_datasets; cost = LLM calls"
+   },
+   {
+    "hf_id": "tasksource/proofwriter",
+    "config": "default",
+    "split": "train",
+    "rows": 585552,
+    "license": "not stated",
+    "gated": false,
+    "same_source": false,
+    "framing": "theory + question -> True/False/Unknown",
+    "distractor_method": "n/a",
+    "risk": "low"
+   },
+   {
+    "hf_id": "lucasmccabe/logiqa",
+    "config": "default",
+    "split": "train",
+    "rows": 7376,
+    "license": "not stated",
+    "gated": false,
+    "same_source": false,
+    "framing": "4-option logic MCQ",
+    "distractor_method": "native",
+    "risk": "licence unverified"
+   },
+   {
+    "hf_id": "tasksource/reclor",
+    "config": "default",
+    "split": "train",
+    "rows": 4638,
+    "license": "other (ReClor: research-only)",
+    "gated": false,
+    "same_source": false,
+    "framing": "4-option logic MCQ",
+    "distractor_method": "native",
+    "risk": "non-commercial"
+   }
+  ]
+ },
+ {
+  "benchmark": "SATA-Bench",
+  "area": "Knowledge & Reasoning",
+  "suite_source_split": "GitHub sata-bench/sata-bench@371dd0c sata_bench_final_2025.json (ALL 1,650); per-candidate yes/no",
+  "candidates": [
+   {
+    "hf_id": "sata-bench/sata-bench",
+    "config": "default",
+    "split": "train",
+    "rows": 1604,
+    "license": "CC-BY-NC-4.0",
+    "gated": false,
+    "same_source": true,
+    "framing": "-",
+    "distractor_method": "-",
+    "risk": "NEVER USE: 'train' is the benchmark itself"
+   },
+   {
+    "hf_id": "sata-bench/sata-bench-raw",
+    "config": "default",
+    "split": "train",
+    "rows": 7983,
+    "license": "CC-BY-NC-4.0",
+    "gated": false,
+    "same_source": true,
+    "framing": "-",
+    "distractor_method": "-",
+    "risk": "NEVER USE: pre-filter superset containing eval items"
+   },
+   {
+    "hf_id": "synthetic",
+    "config": "-",
+    "split": "-",
+    "rows": "generate",
+    "license": "-",
+    "gated": false,
+    "same_source": false,
+    "framing": "state={paragraph}; question + one yes/no per candidate (3-16), several correct",
+    "distractor_method": "build multi-answer items from RACE/QASC/CommonsenseQA passages + LLM-written extra correct/incorrect candidates",
+    "risk": "LOW; no clean multi-select train set found"
+   }
+  ]
+ },
+ {
+  "benchmark": "CRUXEval",
+  "area": "Knowledge & Reasoning",
+  "suite_source_split": "GitHub facebookresearch/cruxeval@190faf1 data/cruxeval.jsonl (570 used) + codellama-7b generations as distractors",
+  "candidates": [
+   {
+    "hf_id": "cruxeval-org/cruxeval / xhwl/cruxeval-x / EssentialAI/cruxeval_*_adv",
+    "config": "-",
+    "split": "-",
+    "rows": 800,
+    "license": "MIT",
+    "gated": false,
+    "same_source": true,
+    "framing": "-",
+    "distractor_method": "-",
+    "risk": "NEVER USE: same 800 functions (translations/adversarial variants)"
+   },
+   {
+    "hf_id": "semcoder/PyX",
+    "config": "default",
+    "split": "train",
+    "rows": 93456,
+    "license": "MIT",
+    "gated": false,
+    "same_source": false,
+    "framing": "state={code, input}; 'Choose the correct output of f...'; options = Python literals (up to 10)",
+    "distractor_method": "execute mutated inputs/mutated code, plus small-LLM wrong outputs (mirrors suite's codellama-7b distractors)",
+    "risk": "LOW; dedupe function bodies vs cruxeval.jsonl"
+   },
+   {
+    "hf_id": "livecodebench/execution-v2",
+    "config": "default",
+    "split": "test",
+    "rows": 479,
+    "license": "cc (unspecified)",
+    "gated": false,
+    "same_source": false,
+    "framing": "same",
+    "distractor_method": "same",
+    "risk": "low (separate benchmark)"
+   }
+  ]
+ },
+ {
+  "benchmark": "CLadder",
+  "area": "Knowledge & Reasoning",
+  "suite_source_split": "GitHub causalNLP/cladder@3d2d116 data/cladder-v1.zip cladder-v1-q-balanced.json, 5,000 seeded cases",
+  "candidates": [
+   {
+    "hf_id": "tasksource/cladder",
+    "config": "default",
+    "split": "train",
+    "rows": 10560,
+    "license": "MIT",
+    "gated": false,
+    "same_source": true,
+    "framing": "-",
+    "distractor_method": "-",
+    "risk": "NEVER USE: full CLadder v1 incl. suite rows"
+   },
+   {
+    "hf_id": "github:causalNLP/cladder cladder-v1-q-balanced.json rows NOT in the 5,000",
+    "config": "balanced",
+    "split": "unselected",
+    "rows": "unverified (~5k)",
+    "license": "MIT",
+    "gated": false,
+    "same_source": true,
+    "framing": "exact",
+    "distractor_method": "n/a",
+    "risk": "HIGH: same templates/graphs/stories; legal by row-id but maintainers will likely flag -> avoid"
+   },
+   {
+    "hf_id": "causal-nlp/corr2cause",
+    "config": "default",
+    "split": "train",
+    "rows": 205734,
+    "license": "not stated on card",
+    "gated": false,
+    "same_source": false,
+    "framing": "premise (correlations) + hypothesis -> yes/no",
+    "distractor_method": "n/a",
+    "risk": "low"
+   },
+   {
+    "hf_id": "github:causalNLP/cladder generator code",
+    "config": "synthetic",
+    "split": "n/a",
+    "rows": "generate",
+    "license": "MIT",
+    "gated": false,
+    "same_source": true,
+    "framing": "new seeds/story templates, yes/no",
+    "distractor_method": "n/a",
+    "risk": "MEDIUM: dedupe vs cladder-v1; prefer new stories"
+   }
+  ]
+ },
+ {
+  "benchmark": "HLE",
+  "area": "Knowledge & Reasoning (gold 1.2)",
+  "suite_source_split": "HF cais/hle@5a81a4c (gated) data/test (513 text-only MC items)",
+  "candidates": [
+   {
+    "hf_id": "m-a-p/SuperGPQA",
+    "config": "default",
+    "split": "train",
+    "rows": 26529,
+    "license": "ODC-BY",
+    "gated": false,
+    "same_source": false,
+    "framing": "hard MCQ, up to 10 options",
+    "distractor_method": "native",
+    "risk": "low"
+   },
+   {
+    "hf_id": "cais/mmlu",
+    "config": "all",
+    "split": "auxiliary_train",
+    "rows": 99842,
+    "license": "MIT (RACE part non-commercial)",
+    "gated": false,
+    "same_source": false,
+    "framing": "MCQ",
+    "distractor_method": "native",
+    "risk": "low"
+   }
+  ],
+  "notes": "No train split; only substitutes."
+ },
+ {
+  "benchmark": "MMLU-Pro",
+  "area": "Knowledge & Reasoning (gold 1.2)",
+  "suite_source_split": "HF TIGER-Lab/MMLU-Pro@b189ec7 data/test (12,032); A.. 3-10 options; question as state",
+  "candidates": [
+   {
+    "hf_id": "TIGER-Lab/MMLU-Pro",
+    "config": "default",
+    "split": "validation",
+    "rows": 70,
+    "license": "MIT",
+    "gated": false,
+    "same_source": true,
+    "framing": "exact (state=question, 'Which option is the correct answer?')",
+    "distractor_method": "native",
+    "risk": "LOW"
+   },
+   {
+    "hf_id": "m-a-p/SuperGPQA",
+    "config": "default",
+    "split": "train",
+    "rows": 26529,
+    "license": "ODC-BY",
+    "gated": false,
+    "same_source": false,
+    "framing": "10-option format matches",
+    "distractor_method": "native",
+    "risk": "low"
+   },
+   {
+    "hf_id": "cais/mmlu",
+    "config": "all",
+    "split": "auxiliary_train",
+    "rows": 99842,
+    "license": "MIT",
+    "gated": false,
+    "same_source": false,
+    "framing": "pad to 10 options with options from other questions of same source",
+    "distractor_method": "sampled options",
+    "risk": "low"
+   },
+   {
+    "hf_id": "TIGER-Lab/TheoremQA",
+    "config": "default",
+    "split": "test",
+    "rows": 800,
+    "license": "MIT",
+    "gated": false,
+    "same_source": false,
+    "framing": "-",
+    "distractor_method": "-",
+    "risk": "NEVER USE: MMLU-Pro sources TheoremQA (and SciBench); BRIGHT also has theoremqa_* queries"
+   }
+  ],
+  "notes": "MMLU test questions are a source of MMLU-Pro -> never train on cais/mmlu test."
+ },
+ {
+  "benchmark": "BBH",
+  "area": "Knowledge & Reasoning (gold 1.2)",
+  "suite_source_split": "GitHub suzgunmirac/BIG-Bench-Hard@9ee07bd bbh/*.json, 23 fixed-option tasks (5,507)",
+  "candidates": [
+   {
+    "hf_id": "lukaemon/bbh / maveriq/bigbenchhard",
+    "config": "-",
+    "split": "test / train",
+    "rows": "250 per task",
+    "license": "- / MIT",
+    "gated": false,
+    "same_source": true,
+    "framing": "-",
+    "distractor_method": "-",
+    "risk": "NEVER USE: these ARE BBH (maveriq labels it 'train')"
+   },
+   {
+    "hf_id": "tasksource/bigbench (non-BBH tasks only)",
+    "config": "~150 task configs",
+    "split": "train / validation",
+    "rows": "varies",
+    "license": "Apache-2.0",
+    "gated": false,
+    "same_source": false,
+    "framing": "MC tasks -> choice",
+    "distractor_method": "native",
+    "risk": "MEDIUM: exclude every BBH parent task (date_understanding, logical_deduction, tracking_shuffled_objects, navigate, web_of_lies, boolean_expressions, causal_judgment, disambiguation_qa, formal_fallacies, geometric_shapes, hyperbaton, movie_recommendation, penguins_in_a_table, reasoning_about_colored_objects, ruin_names, salient_translation_error_detection, snarks, sports_understanding, temporal_sequences, multistep_arithmetic, object_counting, dyck_languages, word_sorting); BIG-bench canary asks not to train on it -> policy risk"
+   },
+   {
+    "hf_id": "synthetic generators",
+    "config": "-",
+    "split": "-",
+    "rows": "unlimited",
+    "license": "-",
+    "gated": false,
+    "same_source": false,
+    "framing": "programmatic BBH-style: boolean expressions, dyck, multistep arithmetic, logical deduction grids, shuffled-object tracking, navigate, web of lies, date arithmetic, object counting, temporal sequences",
+    "distractor_method": "programmatic",
+    "risk": "LOW; recommended route"
+   }
+  ]
+ },
+ {
+  "benchmark": "MMLU",
+  "area": "not in index (still contamination-checked)",
+  "suite_source_split": "HF cais/mmlu@c30699e all/test (14,042)",
+  "candidates": [
+   {
+    "hf_id": "cais/mmlu",
+    "config": "all",
+    "split": "validation / dev",
+    "rows": "1,531 / 285",
+    "license": "MIT",
+    "gated": false,
+    "same_source": true,
+    "framing": "exact 4-option",
+    "distractor_method": "native",
+    "risk": "LOW"
+   },
+   {
+    "hf_id": "cais/mmlu",
+    "config": "all",
+    "split": "auxiliary_train",
+    "rows": 99842,
+    "license": "MIT (contains RACE: CMU non-commercial terms)",
+    "gated": false,
+    "same_source": true,
+    "framing": "4-option MCQ",
+    "distractor_method": "native",
+    "risk": "LOW; includes ARC/OBQA/RACE/MCTest train"
+   },
+   {
+    "hf_id": "tau/commonsense_qa",
+    "config": "default",
+    "split": "train",
+    "rows": 9741,
+    "license": "MIT",
+    "gated": false,
+    "same_source": false,
+    "framing": "5-option",
+    "distractor_method": "native",
+    "risk": "low"
+   },
+   {
+    "hf_id": "allenai/openbookqa",
+    "config": "main",
+    "split": "train",
+    "rows": 4957,
+    "license": "unknown on card (AI2 Apache-2.0, unverified)",
+    "gated": false,
+    "same_source": false,
+    "framing": "4-option",
+    "distractor_method": "native",
+    "risk": "low"
+   },
+   {
+    "hf_id": "allenai/qasc",
+    "config": "default",
+    "split": "train",
+    "rows": 8134,
+    "license": "CC-BY-4.0",
+    "gated": false,
+    "same_source": false,
+    "framing": "8-option",
+    "distractor_method": "native",
+    "risk": "low"
+   },
+   {
+    "hf_id": "ehovy/race",
+    "config": "all",
+    "split": "train",
+    "rows": 87866,
+    "license": "other (non-commercial)",
+    "gated": false,
+    "same_source": false,
+    "framing": "passage as state, 4-option",
+    "distractor_method": "native",
+    "risk": "NC"
+   },
+   {
+    "hf_id": "baber/piqa",
+    "config": "default",
+    "split": "train",
+    "rows": 16113,
+    "license": "not stated (PIQA AFL-3.0, unverified)",
+    "gated": false,
+    "same_source": false,
+    "framing": "2-option",
+    "distractor_method": "native",
+    "risk": "low"
+   },
+   {
+    "hf_id": "tasksource/social_i_qa",
+    "config": "default",
+    "split": "train",
+    "rows": 33410,
+    "license": "unknown",
+    "gated": false,
+    "same_source": false,
+    "framing": "3-option",
+    "distractor_method": "native",
+    "risk": "low"
+   },
+   {
+    "hf_id": "allenai/sciq",
+    "config": "default",
+    "split": "train",
+    "rows": 11679,
+    "license": "CC-BY-NC-3.0",
+    "gated": false,
+    "same_source": false,
+    "framing": "4-option",
+    "distractor_method": "native",
+    "risk": "NC"
+   }
+  ]
+ },
+ {
+  "benchmark": "ARC-Easy",
+  "area": "not in index",
+  "suite_source_split": "HF allenai/ai2_arc (latest, unpinned) ARC-Easy/test (2,376)",
+  "candidates": [
+   {
+    "hf_id": "allenai/ai2_arc",
+    "config": "ARC-Easy",
+    "split": "train / validation",
+    "rows": "2,251 / 570",
+    "license": "CC-BY-SA-4.0",
+    "gated": false,
+    "same_source": true,
+    "framing": "exact",
+    "distractor_method": "native",
+    "risk": "LOW (suite uses unpinned 'latest'; only test is evaluated)"
+   }
+  ]
+ },
+ {
+  "benchmark": "ARC-Challenge",
+  "area": "not in index",
+  "suite_source_split": "HF allenai/ai2_arc (latest) ARC-Challenge/test (1,172)",
+  "candidates": [
+   {
+    "hf_id": "allenai/ai2_arc",
+    "config": "ARC-Challenge",
+    "split": "train / validation",
+    "rows": "1,119 / 299",
+    "license": "CC-BY-SA-4.0",
+    "gated": false,
+    "same_source": true,
+    "framing": "exact",
+    "distractor_method": "native",
+    "risk": "LOW"
+   }
+  ]
+ },
+ {
+  "benchmark": "SimpleBench",
+  "area": "not in index",
+  "suite_source_split": "GitHub simple-bench/SimpleBench@fbc2e42 simple_bench_public.json (10 public items)",
+  "candidates": [
+   {
+    "hf_id": "synthetic",
+    "config": "-",
+    "split": "-",
+    "rows": "generate",
+    "license": "-",
+    "gated": false,
+    "same_source": false,
+    "framing": "trick/common-sense spatial-temporal puzzles with 6 options",
+    "distractor_method": "LLM-authored",
+    "risk": "no legal same-source data; low value (10 items, not indexed)"
+   }
+  ]
+ },
+ {
+  "benchmark": "RouterBench",
+  "area": "not in index",
+  "suite_source_split": "HF withmartian/routerbench@7840214 routerbench_{0,5}shot.pkl; 80% non-calibration groups (10,000 request cap); 20% calibration groups feed the profiles in state",
+  "candidates": [
+   {
+    "hf_id": "withmartian/routerbench",
+    "config": "calibration groups",
+    "split": "calibration (20%)",
+    "rows": "unverified",
+    "license": "see repo LICENSE",
+    "gated": false,
+    "same_source": true,
+    "framing": "-",
+    "distractor_method": "-",
+    "risk": "NEVER USE: prompts are MMLU/HellaSwag/GSM8K/ARC/WinoGrande eval items -> would contaminate 5 suite benchmarks"
+   },
+   {
+    "hf_id": "routellm/gpt4_dataset",
+    "config": "default",
+    "split": "train",
+    "rows": 109101,
+    "license": "Apache-2.0",
+    "gated": false,
+    "same_source": false,
+    "framing": "prompt -> choose gpt-4 vs mixtral (mixtral_score threshold)",
+    "distractor_method": "n/a",
+    "risk": "low; only 2 models"
+   },
+   {
+    "hf_id": "lmarena-ai/arena-human-preference-55k",
+    "config": "default",
+    "split": "train",
+    "rows": 57477,
+    "license": "Apache-2.0",
+    "gated": false,
+    "same_source": false,
+    "framing": "prompt + 2 model names -> which model wins",
+    "distractor_method": "n/a",
+    "risk": "low"
+   }
+  ]
+ },
+ {
+  "benchmark": "SGD/SGD-X",
+  "area": "not in index (build bug)",
+  "suite_source_split": "GitHub google-research-datasets/dstc8-schema-guided-dialogue@e852981 test/ (2,500 seeded turns), active intent choice",
+  "candidates": [
+   {
+    "hf_id": "github:google-research-datasets/dstc8-schema-guided-dialogue train/ (128 files), dev/ (21 files), sgd_x/",
+    "config": "-",
+    "split": "train / dev",
+    "rows": "unverified",
+    "license": "CC-BY-SA-4.0",
+    "gated": false,
+    "same_source": true,
+    "framing": "exact: state={history up to turn, service schema}; options = schema intents + NONE",
+    "distractor_method": "n/a",
+    "risk": "LOW"
+   },
+   {
+    "hf_id": "GEM/schema_guided_dialog",
+    "config": "default",
+    "split": "train",
+    "rows": 164982,
+    "license": "CC-BY-SA-4.0",
+    "gated": false,
+    "same_source": true,
+    "framing": "turn-level",
+    "distractor_method": "n/a",
+    "risk": "its test/challenge_test_* come from SGD test -> NEVER"
+   }
+  ]
+ },
+ {
+  "benchmark": "BPoMP",
+  "area": "Arts & Human Taste (area fixed 0.1)",
+  "suite_source_split": "Zenodo 7299879 BPoMP_datasets_p{1,2,3}_out_of_3.json; 5,000-request cap over original/perturbed pairs",
+  "candidates": [
+   {
+    "hf_id": "zenodo:7299879 unselected pairs",
+    "config": "-",
+    "split": "-",
+    "rows": "unverified",
+    "license": "per Zenodo record",
+    "gated": false,
+    "same_source": true,
+    "framing": "-",
+    "distractor_method": "-",
+    "risk": "NEVER USE: same original limericks recur across perturbation variants"
+   },
+   {
+    "hf_id": "synthetic (public-domain limericks, e.g. Edward Lear via Project Gutenberg)",
+    "config": "-",
+    "split": "-",
+    "rows": "generate",
+    "license": "public domain",
+    "gated": false,
+    "same_source": false,
+    "framing": "2 options: original vs perturbed limerick; 'Which candidate is the original released limerick?'",
+    "distractor_method": "perturb rhyme word, break meter (insert/delete syllables), swap lines, replace words with synonyms",
+    "risk": "MEDIUM: dedupe originals vs BPoMP originals (hash text)"
+   }
+  ]
+ },
+ {
+  "benchmark": "Humicroedit",
+  "area": "Arts & Human Taste",
+  "suite_source_split": "cs.rochester.edu semeval-2020-task-7-dataset.zip subtask-2/test.csv (2,628 non-tie pairs)",
+  "candidates": [
+   {
+    "hf_id": "tasksource/humicroedit",
+    "config": "subtask-2",
+    "split": "train / validation",
+    "rows": "9,381 / 2,355",
+    "license": "unknown (SemEval-2020 Task 7 terms)",
+    "gated": false,
+    "same_source": true,
+    "framing": "exact: 'Which edited news headline is funnier?' headline_1/headline_2 (render original with <word/> replaced by edit); drop label 0 ties",
+    "distractor_method": "n/a",
+    "risk": "VERIFIED 0 edit overlap with subtask-2 test"
+   },
+   {
+    "hf_id": "tasksource/humicroedit",
+    "config": "subtask-1",
+    "split": "train / validation",
+    "rows": "9,652 / 2,419",
+    "license": "unknown",
+    "gated": false,
+    "same_source": true,
+    "framing": "pair two edits of the same original with meanGrade gap >= 0.4",
+    "distractor_method": "pairing",
+    "risk": "VERIFIED 0 overlap with subtask-2 test"
+   },
+   {
+    "hf_id": "tasksource/humicroedit",
+    "config": "subtask-1",
+    "split": "test",
+    "rows": 3024,
+    "license": "unknown",
+    "gated": false,
+    "same_source": true,
+    "framing": "-",
+    "distractor_method": "-",
+    "risk": "NEVER USE: VERIFIED: contains all 3,022 edited headlines used in subtask-2 test"
+   },
+   {
+    "hf_id": "hfht/SemEval-2021-Task-7-Jokes",
+    "config": "train",
+    "split": "train",
+    "rows": 8000,
+    "license": "not stated",
+    "gated": false,
+    "same_source": false,
+    "framing": "pair texts by humor rating -> which is funnier",
+    "distractor_method": "pairing",
+    "risk": "low"
+   }
+  ]
+ },
+ {
+  "benchmark": "POP909-CL",
+  "area": "Arts & Human Taste",
+  "suite_source_split": "GitHub AndyWeasley2004/POP909-CL-Dataset@be90943 POP909_processed/*.mid (all 907 songs), 2,000 seeded beats; 129 chord options",
+  "candidates": [
+   {
+    "hf_id": "aimusicgen/pop909_clean_data / c0smic1atte/pop909_melchord_cp4 / audio-tau/pop909-with-songs / unselected beats",
+    "config": "-",
+    "split": "-",
+    "rows": "-",
+    "license": "-",
+    "gated": false,
+    "same_source": true,
+    "framing": "-",
+    "distractor_method": "-",
+    "risk": "NEVER USE: same 907 songs as eval"
+   },
+   {
+    "hf_id": "synthetic MIDI",
+    "config": "-",
+    "split": "-",
+    "rows": "unlimited",
+    "license": "-",
+    "gated": false,
+    "same_source": false,
+    "framing": "state={target_time_beats, context_notes (+-4 beats), public_context}; 129 options = suite VOCAB (12 roots x 13 qualities deduped + NoChord + Other)",
+    "distractor_method": "render chord templates with random voicings/inversions, rhythm, melody and passing tones; label = sounding pitch-class set",
+    "risk": "LOW; recommended"
+   },
+   {
+    "hf_id": "roszcz/lakh-lmd-full",
+    "config": "-",
+    "split": "train",
+    "rows": "unverified",
+    "license": "unverified",
+    "gated": false,
+    "same_source": false,
+    "framing": "same framing with algorithmic chord labels from notes",
+    "distractor_method": "n/a",
+    "risk": "noisy labels; licence unverified"
+   },
+   {
+    "hf_id": "ailsntua/Chordonomicon",
+    "config": "default",
+    "split": "train",
+    "rows": 679807,
+    "license": "CC-BY-NC-4.0",
+    "gated": false,
+    "same_source": false,
+    "framing": "render progressions to notes then label",
+    "distractor_method": "n/a",
+    "risk": "NC"
+   }
+  ]
+ },
+ {
+  "benchmark": "cfcolor",
+  "area": "Arts & Human Taste",
+  "suite_source_split": "dgp.toronto.edu/~donovan/cfcolor/cfcolor.zip release/allMTurkRatings.mat: targets from test_vec, 4-8 history ratings from train_vec of the same user",
+  "candidates": [
+   {
+    "hf_id": "dgp:cfcolor.zip release/allMTurkRatings.mat",
+    "config": "train_vec",
+    "split": "train",
+    "rows": "unverified",
+    "license": "per project page",
+    "gated": false,
+    "same_source": true,
+    "framing": "same framing: history (4-8 rated palettes) + 2 candidate palettes with rating gap >= 2, both from train_vec",
+    "distractor_method": "pairs by rating gap",
+    "risk": "MEDIUM: suite states contain these train_vec ratings as history; target pairs differ. Prefer users absent from test_vec; never use test_vec"
+   },
+   {
+    "hf_id": "O'Donovan 2011 color compatibility data (Kuler/COLOURlovers/MTurk mean ratings)",
+    "config": "-",
+    "split": "-",
+    "rows": "unverified",
+    "license": "unverified",
+    "gated": false,
+    "same_source": false,
+    "framing": "pairwise: which palette rated higher (no user history)",
+    "distractor_method": "pairing",
+    "risk": "URL/licence unverified"
+   }
+  ]
+ },
+ {
+  "benchmark": "ForecastBench",
+  "area": "Arts & Human Taste",
+  "suite_source_split": "GitHub forecastingresearch/forecastbench-datasets@da48cfb question_sets + resolution_sets, resolutions dated 2026-07-01..2026-09-18 (10,139); noul probability",
+  "candidates": [
+   {
+    "hf_id": "forecastingresearch/forecastbench-datasets",
+    "config": "datasets/resolution_sets + question_sets",
+    "split": "resolution_date < 2026-07-01",
+    "rows": "VERIFIED 104,626 resolved (question,horizon) rows; 8,811 unique (id,source)",
+    "license": "CC-BY-SA-4.0",
+    "gated": false,
+    "same_source": true,
+    "framing": "exact: state={forecast_as_of, resolution_date, information_policy, event (question, background, resolution_criteria, freeze values)}; noul yes/no with resolved_to as label",
+    "distractor_method": "n/a",
+    "risk": "MEDIUM: 2,513 of the 8,811 ids also resolve inside the suite window -> drop every (id,source) in the suite (and joint rows containing them); otherwise training on later outcomes leaks"
+   },
+   {
+    "hf_id": "nikhilchandak/metaculus-binary",
+    "config": "train",
+    "split": "train",
+    "rows": 4265,
+    "license": "MIT",
+    "gated": false,
+    "same_source": false,
+    "framing": "question + background -> probability yes",
+    "distractor_method": "n/a",
+    "risk": "filter resolutions < 2026-07-01; dates unverified"
+   }
+  ]
+ },
+ {
+  "benchmark": "Habermas Machine",
+  "area": "Arts & Human Taste",
+  "suite_source_split": "storage.googleapis.com/habermas_machine/datasets/hm_all_candidate_comparisons.parquet rows with metadata.version EVAL* and question.split in {IID_TEST, OOD_TEST}, initial iteration",
+  "candidates": [
+   {
+    "hf_id": "gcs:habermas_machine/datasets/hm_all_candidate_comparisons.parquet",
+    "config": "non-EVAL cohorts / question.split==TRAIN",
+    "split": "train",
+    "rows": "unverified (0.4GB parquet)",
+    "license": "CC-BY-4.0 (repo: other materials)",
+    "gated": false,
+    "same_source": true,
+    "framing": "exact: state={policy_question, participant_opinions}; options = candidate statements; gold = lowest mean rank",
+    "distractor_method": "n/a",
+    "risk": "LOW-MEDIUM: keep only question.split=='TRAIN' and drop any question.text in IID/OOD_TEST"
+   }
+  ]
+ },
+ {
+  "benchmark": "New Yorker caption matching",
+  "area": "Arts & Human Taste",
+  "suite_source_split": "HF jmhessel/newyorker_caption_contest@d81cbab matching/test (fold 0, 528)",
+  "candidates": [
+   {
+    "hf_id": "jmhessel/newyorker_caption_contest",
+    "config": "matching",
+    "split": "train / validation",
+    "rows": "9,792 / 531",
+    "license": "CC-BY-4.0",
+    "gated": false,
+    "same_source": true,
+    "framing": "exact: state={scene, description, uncanny, entities}; A..E captions",
+    "distractor_method": "native",
+    "risk": "VERIFIED 0 contest overlap with fold-0 test (141 contests)"
+   },
+   {
+    "hf_id": "jmhessel/newyorker_caption_contest",
+    "config": "matching_1..4, matching_from_pixels_1..4",
+    "split": "train",
+    "rows": "~9.6k each",
+    "license": "CC-BY-4.0",
+    "gated": false,
+    "same_source": true,
+    "framing": "-",
+    "distractor_method": "-",
+    "risk": "NEVER USE: VERIFIED matching_1 train contains all 141 fold-0 test contests (cross-validation folds)"
+   },
+   {
+    "hf_id": "jmhessel/newyorker_caption_contest",
+    "config": "ranking / explanation (fold 0)",
+    "split": "train",
+    "rows": "unverified",
+    "license": "CC-BY-4.0",
+    "gated": false,
+    "same_source": true,
+    "framing": "ranking -> 'which caption is funnier'",
+    "distractor_method": "native",
+    "risk": "dedupe contest_number vs fold-0 test (unverified)"
+   }
+  ]
+ }
+]

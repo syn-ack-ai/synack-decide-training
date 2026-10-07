@@ -1,0 +1,14 @@
+# Topics where Wikipedia (and mirrors) is NOT used as a source and the agent must cross-check independent sources
+# across perspectives (user policy, 2026-10-06). One regex per line, case-insensitive. Edit freely.
+israel|palestin|gaza|west bank|hamas|hezbollah|idf\b|zionis|intifada|october 7
+ukraine|russia.*(war|invasion)|crimea|donbas
+taiwan.*(independen|strait|china)|uyghur|xinjiang|tibet
+abortion|roe v\.? wade|pro-?life|pro-?choice
+immigration|illegal (alien|immigra)|border (wall|crisis)|asylum seekers?
+gun control|second amendment|assault weapon
+transgender|gender identity|gender-affirming
+election (fraud|integrity|denial)|stolen election|january 6
+climate (change )?policy|green new deal|net zero
+critical race|affirmative action|\bdei\b|systemic racism|black lives matter
+covid.*(origin|lab leak|vaccine mandate)|lab leak
+trump|biden|harris|maga|democrat|republican

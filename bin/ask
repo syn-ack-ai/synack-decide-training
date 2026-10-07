@@ -1,0 +1,3 @@
+#!/bin/sh
+# Ask the local systemone model Jev-style questions, or serve /v1/systemone. See v2/serve_local.py --help.
+exec "$HOME/systemone/mlxenv/bin/python" "$HOME/systemone/v2/serve_local.py" "$@"

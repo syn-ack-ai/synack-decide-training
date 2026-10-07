@@ -1,0 +1,27 @@
+# Mirrors tev1's Together recipe (docs/TRAINING.md) as closely as mlx-lm allows.
+# Differences: no sequence packing; LoRA alpha 16 / rank 8 -> mlx scale 2.0.
+model: ../models/gemma4-e4b-mlx-bf16
+train: true
+data: data
+fine_tune_type: lora
+num_layers: -1          # all transformer blocks
+lora_parameters:
+  rank: 8
+  scale: 2.0
+  dropout: 0.0
+mask_prompt: true       # completion-only loss
+batch_size: 8
+iters: 4730             # 1 epoch of 37,840 examples
+learning_rate: 5.0e-5
+lr_schedule:
+  name: cosine_decay
+  warmup: 142           # 3% warmup
+  arguments: [5.0e-5, 4730, 0.0]
+max_seq_length: 2048
+grad_checkpoint: true
+seed: 42
+steps_per_report: 50
+steps_per_eval: 500
+val_batches: 25
+save_every: 1000
+adapter_path: adapters/gemma4-e4b-tev

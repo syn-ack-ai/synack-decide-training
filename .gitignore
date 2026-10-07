@@ -1,0 +1,52 @@
+# Large or regenerable artifacts (kept on Hugging Face / rebuilt from source)
+models/
+mlxenv/
+.venv/
+datasets/
+backup-dreamer/
+v2/data/
+v2/adapters/
+v2/*.npz
+train/data/
+train/adapters/
+bench/results/**/results.jsonl
+
+# Third-party clones (see README for sources and revisions)
+tev1/
+decision-index/
+synack-site/
+
+# Decision Index suite rows and excerpts: the harness asks that they not be redistributed
+runs/suite-sample3000/
+runs/sample-3000.jsonl.gz
+runs/suite-formats.txt
+runs/suite-fullformats.json
+runs/tev1-sample3000/results.jsonl
+runs/*/results.jsonl
+runs/monitor_seen.txt
+runs/dl*.log
+
+# Secrets and local noise
+.env
+.env.*
+*.pem
+**/__pycache__/
+.DS_Store
+*.log.tmp
+v2/*.log
+train/*.log
+prcx/vendor/
+prcx/data/
+prcx/repos/
+prcx/preds/
+prcx/.venv/
+prcx/*.log
+v2/data/v3/
+
+# llama.cpp checkout and converter venv; GGUF upload staging
+llama.cpp/
+ggufenv/
+runs/v4-pkg/
+runs/gguf_cmp_*.jsonl
+runs/**/results.jsonl
+runs/upload_*.log

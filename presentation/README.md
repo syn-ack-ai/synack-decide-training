@@ -10,7 +10,7 @@ training loop), the pipeline, the version history and the result (59.54 on the D
 | [SynACK-Decide-v7-how-we-trained-it.pdf](SynACK-Decide-v7-how-we-trained-it.pdf) | The same slides as a PDF (GitHub shows the PDF in the browser) |
 | [SPEAKER_NOTES.md](SPEAKER_NOTES.md) | A plain-language script for every slide |
 | [source/](source/) | Slide sources (`deck.json` plus one HTML file per slide) |
-| [tools/build_viewer.py](tools/build_viewer.py) | Rebuilds the one-file HTML from `source/` |
+| [tools/build_viewer.py](tools/build_viewer.py) | Rebuilds the one-file HTML: `python tools/build_viewer.py source FONT_DIR out.html`, where FONT_DIR holds the IBM Plex Sans (variable) and IBM Plex Mono 400/600 woff2 files from Google Fonts |
 
 **Using the HTML file:** arrow keys, space or a click move between slides; **N** shows the speaker notes under the
 slide; **F** is full screen; `#6` at the end of the address opens slide 6. Printing it (Save as PDF) gives one slide per

@@ -21,7 +21,7 @@ project's logs, job scripts, result files or notes in [docs/](docs/).
 
 Write-up of the project: <https://syn-ack.ai/posts/teaching-a-small-model-to-decide>
 
-**Presentation:** [slides (PDF)](presentation/SynACK-Decide-v7-how-we-trained-it.pdf) and [speaker notes](presentation/SPEAKER_NOTES.md), a 25-slide talk for non-ML audiences ([presentation/](presentation/)).
+**Presentation:** [one-file HTML deck](presentation/SynACK-Decide-v7-how-we-trained-it.html) (download and open; N for notes), [slides (PDF)](presentation/SynACK-Decide-v7-how-we-trained-it.pdf) and [speaker notes](presentation/SPEAKER_NOTES.md), a 25-slide talk for non-ML audiences ([presentation/](presentation/)).
 
 > **Naming.** The released model was built under the name **v7b**. It is called **v7** everywhere now. The earlier,
 > failed fresh run is **old v7**. Job, dataset and adapter names that say `v7b` (for example

@@ -76,6 +76,10 @@ order for larger option sets (`expand()` in [v2/common.py](v2/common.py)).
 
 ### 1.1 From chat model to decision model: the training shape
 
+> New to machine learning? [docs/HOW_TRAINING_WORKS.md](docs/HOW_TRAINING_WORKS.md) explains tokens, softmax,
+> cross-entropy, distillation, gradients, backpropagation, LoRA and the training loop from the ground up, using this
+> same example with worked numbers.
+
 Gemma 4 is a chat model that writes free text. We did **not** teach it to write JSON. We taught it to answer every
 decision prompt with **exactly one label token**, then end its turn. The structured output is assembled outside the
 model, from the probabilities of the label tokens at the first answer position. One forward pass gives one
@@ -337,6 +341,9 @@ time) over every row marked `replay` and stores its option probabilities as the 
 with gold. The aim is to keep what the stacked v3 to v5 rounds learned, without their accumulated drift.
 
 ### 3.8 Training
+
+A plain-language walk-through of what one training step does is in
+[docs/HOW_TRAINING_WORKS.md](docs/HOW_TRAINING_WORKS.md).
 
 [jobs/job_v7b.sh](jobs/job_v7b.sh) runs on Hugging Face Jobs. It downloads the data, fills the v5 targets, trains
 with [v2/train_hf.py](v2/train_hf.py), then runs every probe. The launch used:
@@ -615,7 +622,7 @@ launch was about $26; the final bill is not recorded here.
 | [runs/](runs/) | regression gate, board card, parity scripts, data manifest |
 | [bench/](bench/) | Tev1 baselines and engine, label list, provisional Decisions-style server |
 | [bin/ask](bin/ask), [bin/route](bin/route) | local CLI and HTTP server for decisions and PR routing |
-| [docs/](docs/) | handoff notes, hardware measurements, v4 backlog, v6/v7/v8 plan |
+| [docs/](docs/) | [how training works](docs/HOW_TRAINING_WORKS.md) (beginner explainer), handoff notes, hardware measurements, v4 backlog, v6/v7/v8 plan |
 
 ### Other experiments in this repo (not part of v7)
 
